@@ -6,7 +6,7 @@ A plataforma funciona como um explorador e repositório de arquivos focado em m�
 
 ---
 
-## 📌 Motivação e Arquitetura (Migração Vanilla JS)
+## Motivação e Arquitetura (Migração Vanilla JS)
 
 Originalmente estruturado em **Next.js**, o projeto foi reformulado para **HTML5, CSS3 e JavaScript puro (Vanilla)** (`template/index.html`).
 
@@ -16,15 +16,15 @@ Originalmente estruturado em **Next.js**, o projeto foi reformulado para **HTML5
 
 ---
 
-## 🚀 Principais Funcionalidades
+## Principais Funcionalidades
 
 - **Dashboard Estilo Explorer (Clone Drive/Finder):** Modos de visualização em Grid (Grade) e List (Lista).
 - **Aba "Extrator IA & Newsletter":** Extração automática da **imagem principal da matéria**, **logo do portal de notícias**, resumo e portal a partir de uma URL informada.
 - **Gerador de Newsletter Diária (#saiunamídia):** Consolidação das notícias do dia em um único HTML padronizado com a identidade COPASA (`template/newsletter_copasa_2026_07_13.html`).
 - **Pré-visualização ao Vivo:** Exibição interativa e em tempo real do boletim dentro da plataforma.
 - **Dois Modos de Exportação:**
-  - 🌐 **Exportar para HTML (WCM HCL):** Gera o bloco de código HTML limpo pronto para colar como conteúdo/portlet no Portal WCM HCL da COPASA.
-  - 📧 **Exportar para E-mail:** Gera o código HTML completo responsivo, baseado em tabelas e estilos inline, otimizado para clientes de e-mail (Outlook, Gmail, etc.).
+  - **Exportar para HTML (WCM HCL):** Gera o bloco de código HTML limpo pronto para colar como conteúdo/portlet no Portal WCM HCL da COPASA.
+  - **Exportar para E-mail:** Gera o código HTML completo responsivo, baseado em tabelas e estilos inline, otimizado para clientes de e-mail (Outlook, Gmail, etc.).
 - **Hospedagem em Nuvem via Cloudinary:** Upload direto para o Cloudinary com geração automática de URLs otimizadas para cópia e compartilhamento imediato.
 - **Navegação por Pastas:** Estrutura em árvore ilimitada com suporte a navegação em migalhas de pão (*Breadcrumb*).
 - **Visualização Rápida (Lightbox):** Pré-visualização com um único clique e funcionalidade de cópia de link direto em 1 clique.
@@ -34,7 +34,7 @@ Originalmente estruturado em **Next.js**, o projeto foi reformulado para **HTML5
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 ### Frontend
 - **HTML5 & CSS3 Vanilla:** Variáveis CSS nativas e layout responsivo com Flexbox/Grid.
@@ -48,7 +48,7 @@ Originalmente estruturado em **Next.js**, o projeto foi reformulado para **HTML5
 
 ---
 
-## 🤖 Extrator IA & Gerador de Newsletter (Groq & Llama 3.1 8B)
+## Extrator IA & Gerador de Newsletter (Groq & Llama 3.1 8B)
 
 A aplicação conta com um módulo de **Inteligência Artificial & Clipping**:
 
@@ -62,7 +62,7 @@ A aplicação conta com um módulo de **Inteligência Artificial & Clipping**:
 
 ---
 
-## 📦 Como Executar o Projeto Localmente
+## Como Executar o Projeto Localmente
 
 ### Pré-requisitos
 - Python 3.12+
