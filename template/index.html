@@ -1,0 +1,1511 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SaiuNaMídia · COPASA</title>
+    <meta name="description" content="Repositório de imagens e mídias da publicidade COPASA" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --snm-bg: #f1f5f9;
+        --snm-sidebar-bg: #0f172a;
+        --snm-card-bg: #ffffff;
+        --snm-primary: #0ea5e9;
+        --snm-primary-hover: #0284c7;
+        --snm-text-main: #0f172a;
+        --snm-text-muted: #64748b;
+        --snm-text-sub: #94a3b8;
+        --snm-border: #e2e8f0;
+        --snm-accent-blue: #38bdf8;
+        --snm-danger: #b91c1c;
+        --snm-danger-bg: #fee2e2;
+        --snm-radius-sm: 8px;
+        --snm-radius-md: 10px;
+        --snm-radius-lg: 12px;
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* ── RESET & ROOT ── */
+      #snm-root {
+        all: initial;
+        display: block;
+        font-family: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+        color: var(--snm-text-main);
+        background: var(--snm-bg);
+        margin: 0 auto;
+        padding: 0;
+        box-sizing: border-box;
+        min-height: 100vh;
+      }
+      #snm-root * { box-sizing: border-box; margin: 0; padding: 0; }
+
+      /* ── LOGIN OVERLAY ── */
+      #snm-root .snm-login-overlay {
+        position: fixed; inset: 0; z-index: 9999;
+        display: flex; align-items: center; justify-content: center; padding: 20px;
+        background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0c4a6e 100%);
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+      #snm-root .snm-login-overlay.snm-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+      #snm-root .snm-login-card {
+        width: 100%; max-width: 400px;
+        background: #ffffff; border-radius: 20px;
+        padding: 40px 36px;
+        box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+      }
+      #snm-root .snm-login-logo {
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+        margin-bottom: 28px;
+      }
+      #snm-root .snm-login-logo svg { width: 36px; height: 36px; }
+      #snm-root .snm-login-logo-text {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 1.6rem; font-weight: 700; color: var(--snm-text-main);
+      }
+      #snm-root .snm-login-logo-text span { color: var(--snm-primary); }
+      #snm-root .snm-login-sub {
+        text-align: center; font-size: 0.8rem; color: var(--snm-text-muted);
+        margin-bottom: 28px; letter-spacing: 0.3px;
+      }
+      #snm-root .snm-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+      #snm-root .snm-field label {
+        font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+        letter-spacing: 0.7px; color: #475569;
+      }
+      #snm-root .snm-field input {
+        background: #f8fafc; border: 1.5px solid var(--snm-border); border-radius: 10px;
+        padding: 11px 14px; font-size: 0.88rem; font-family: "DM Sans", sans-serif;
+        color: var(--snm-text-main); outline: none; width: 100%;
+        transition: border-color 0.15s, box-shadow 0.15s;
+      }
+      #snm-root .snm-field input:focus {
+        border-color: var(--snm-primary); box-shadow: 0 0 0 3px rgba(14,165,233,0.15);
+        background: #fff;
+      }
+      #snm-root .snm-login-error {
+        display: none; font-size: 0.78rem; color: var(--snm-danger);
+        background: var(--snm-danger-bg); border: 1px solid #fca5a5;
+        border-radius: 8px; padding: 10px 14px; text-align: center; margin-bottom: 14px;
+      }
+      #snm-root .snm-login-error.snm-show { display: block; }
+      #snm-root .snm-btn-login {
+        width: 100%; padding: 13px; border: none; border-radius: 10px;
+        background: linear-gradient(135deg, var(--snm-primary), var(--snm-primary-hover));
+        color: #fff; font-family: "DM Sans", sans-serif;
+        font-size: 0.92rem; font-weight: 600; cursor: pointer;
+        box-shadow: 0 4px 16px rgba(14,165,233,0.35);
+        transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 8px;
+      }
+      #snm-root .snm-btn-login:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(14,165,233,0.45); }
+      #snm-root .snm-spinner {
+        display: none; width: 16px; height: 16px;
+        border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
+        border-radius: 50%; animation: snm-spin 0.6s linear infinite;
+      }
+      #snm-root .snm-btn-login.snm-loading .snm-spinner { display: block; }
+      #snm-root .snm-btn-login.snm-loading .snm-btn-text { display: none; }
+      @keyframes snm-spin { to { transform: rotate(360deg); } }
+
+      /* ── SHELL ── */
+      #snm-root .snm-shell { display: flex; height: 100vh; overflow: hidden; }
+
+      /* ── SIDEBAR (Light Theme) ── */
+      #snm-root .snm-sidebar {
+        width: 250px; flex-shrink: 0;
+        background: #ffffff;
+        border-right: 1px solid var(--snm-border);
+        display: flex; flex-direction: column;
+        height: 100vh; overflow: hidden;
+        user-select: none;
+      }
+
+      #snm-root .snm-sidebar-header {
+        padding: 20px 20px 18px;
+        border-bottom: 1px solid #f1f5f9;
+        flex-shrink: 0;
+      }
+      #snm-root .snm-brand { display: flex; align-items: center; gap: 10px; }
+      #snm-root .snm-brand-icon {
+        width: 36px; height: 36px;
+        background: linear-gradient(135deg, var(--snm-primary), var(--snm-primary-hover));
+        border-radius: 10px; display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);
+      }
+      #snm-root .snm-brand-icon svg { width: 20px; height: 20px; color: #ffffff; }
+      #snm-root .snm-brand-name {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 1.15rem; font-weight: 700; color: var(--snm-text-main);
+        letter-spacing: -0.2px; white-space: nowrap;
+      }
+      #snm-root .snm-brand-name span { color: var(--snm-primary); }
+
+      #snm-root .snm-sidebar-section { padding: 16px 14px 6px; }
+      #snm-root .snm-sidebar-label-wrap {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 6px; margin-bottom: 6px;
+      }
+      #snm-root .snm-sidebar-label {
+        font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 1.2px; color: #94a3b8; display: block;
+      }
+      #snm-root .snm-btn-add-folder-icon {
+        background: none; border: none; cursor: pointer; color: #94a3b8;
+        display: flex; align-items: center; justify-content: center;
+        padding: 2px; border-radius: 4px; transition: all 0.15s;
+      }
+      #snm-root .snm-btn-add-folder-icon:hover { color: var(--snm-primary); background: #f0f9ff; }
+      #snm-root .snm-btn-add-folder-icon svg { width: 14px; height: 14px; }
+
+      #snm-root .snm-nav-item {
+        display: flex; align-items: center; gap: 10px;
+        padding: 9px 12px; border-radius: 8px; cursor: pointer;
+        color: #475569; font-size: 0.84rem; font-weight: 500;
+        transition: all 0.15s ease; margin-bottom: 2px;
+        position: relative;
+      }
+      #snm-root .snm-nav-item:hover {
+        background: #f8fafc; color: var(--snm-text-main);
+        transform: translateX(2px);
+      }
+      #snm-root .snm-nav-item.snm-active {
+        background: #f0f9ff;
+        color: var(--snm-primary); font-weight: 600;
+        box-shadow: inset 3px 0 0 var(--snm-primary);
+      }
+      #snm-root .snm-nav-item svg { width: 16px; height: 16px; flex-shrink: 0; color: #64748b; transition: color 0.15s; }
+      #snm-root .snm-nav-item:hover svg { color: var(--snm-text-main); }
+      #snm-root .snm-nav-item.snm-active svg { color: var(--snm-primary); }
+      #snm-root .snm-nav-item .snm-nav-text { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      #snm-root .snm-nav-item .snm-nav-count {
+        font-size: 0.68rem; font-weight: 600;
+        background: #e2e8f0; color: #64748b;
+        border-radius: 12px; padding: 2px 8px;
+        transition: all 0.15s;
+      }
+      #snm-root .snm-nav-item.snm-active .snm-nav-count {
+        background: rgba(14, 165, 233, 0.15); color: var(--snm-primary);
+      }
+
+      #snm-root .snm-folder-tree { padding: 0 14px; flex: 1; overflow-y: auto; }
+      #snm-root .snm-folder-tree::-webkit-scrollbar { width: 4px; }
+      #snm-root .snm-folder-tree::-webkit-scrollbar-track { background: transparent; }
+      #snm-root .snm-folder-tree::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+      #snm-root .snm-folder-tree::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+      #snm-root .snm-folder-row {
+        display: flex; align-items: center; gap: 8px;
+        padding: 7px 10px; border-radius: 8px; cursor: pointer;
+        color: #475569; font-size: 0.82rem; font-weight: 400;
+        transition: all 0.15s ease; margin-bottom: 2px;
+      }
+      #snm-root .snm-folder-row:hover {
+        background: #f8fafc; color: var(--snm-text-main);
+        transform: translateX(2px);
+      }
+      #snm-root .snm-folder-row.snm-active {
+        background: #f0f9ff;
+        color: var(--snm-primary); font-weight: 600;
+        box-shadow: inset 3px 0 0 var(--snm-primary);
+      }
+      #snm-root .snm-folder-icon { color: #f59e0b; flex-shrink: 0; transition: transform 0.15s; }
+      #snm-root .snm-folder-row:hover .snm-folder-icon { transform: scale(1.1); }
+      #snm-root .snm-folder-row .snm-folder-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+      #snm-root .snm-empty-folders {
+        font-size: 0.75rem; color: #94a3b8; font-style: italic; padding: 8px 10px;
+      }
+
+      #snm-root .snm-sidebar-footer {
+        padding: 12px 14px;
+        border-top: 1px solid #f1f5f9;
+        flex-shrink: 0; background: #ffffff;
+      }
+      #snm-root .snm-user-card {
+        display: flex; align-items: center; gap: 10px;
+        padding: 8px 10px; border-radius: 10px;
+        background: #f8fafc;
+        border: 1px solid var(--snm-border);
+        transition: border-color 0.15s, box-shadow 0.15s;
+      }
+      #snm-root .snm-user-card:hover { border-color: #cbd5e1; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+      #snm-root .snm-avatar {
+        width: 32px; height: 32px; border-radius: 50%;
+        background: linear-gradient(135deg, var(--snm-primary), #6366f1);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.75rem; font-weight: 700; color: #fff; flex-shrink: 0;
+        box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);
+      }
+      #snm-root .snm-user-info { flex: 1; min-width: 0; }
+      #snm-root .snm-user-name { font-size: 0.8rem; font-weight: 600; color: var(--snm-text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      #snm-root .snm-user-role { font-size: 0.65rem; color: #64748b; font-weight: 500; }
+      #snm-root .snm-logout-btn {
+        background: #f1f5f9; border: none; cursor: pointer; color: #64748b;
+        width: 28px; height: 28px; border-radius: 6px; transition: all 0.15s;
+        display: flex; align-items: center; justify-content: center;
+      }
+      #snm-root .snm-logout-btn:hover { background: #fee2e2; color: #ef4444; }
+      #snm-root .snm-logout-btn svg { width: 14px; height: 14px; }
+
+      /* ── MAIN AREA ── */
+      #snm-root .snm-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+      /* ── TOPBAR ── */
+      #snm-root .snm-topbar {
+        background: #fff; border-bottom: 1px solid var(--snm-border);
+        padding: 0 24px; height: 56px; flex-shrink: 0;
+        display: flex; align-items: center; gap: 16px;
+      }
+      #snm-root .snm-breadcrumb {
+        display: flex; align-items: center; gap: 6px; flex: 1;
+        font-size: 0.82rem; color: var(--snm-text-muted); overflow: hidden;
+      }
+      #snm-root .snm-breadcrumb-item { cursor: pointer; white-space: nowrap; transition: color 0.12s; }
+      #snm-root .snm-breadcrumb-item:hover { color: var(--snm-primary); }
+      #snm-root .snm-breadcrumb-item.snm-current { color: var(--snm-text-main); font-weight: 600; cursor: default; }
+      #snm-root .snm-breadcrumb-item.snm-current:hover { color: var(--snm-text-main); }
+      #snm-root .snm-breadcrumb-sep { color: #cbd5e1; font-size: 0.7rem; }
+
+      #snm-root .snm-topbar-actions { display: flex; align-items: center; gap: 8px; }
+      #snm-root .snm-view-toggle { display: flex; background: #f1f5f9; border-radius: 8px; padding: 3px; }
+      #snm-root .snm-view-btn {
+        padding: 5px 8px; border: none; border-radius: 6px; cursor: pointer;
+        background: none; color: var(--snm-text-muted); transition: all 0.12s; display: flex; align-items: center;
+      }
+      #snm-root .snm-view-btn svg { width: 15px; height: 15px; }
+      #snm-root .snm-view-btn.snm-active { background: #fff; color: var(--snm-text-main); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+      #snm-root .snm-topbar-btn {
+        display: flex; align-items: center; gap: 6px;
+        padding: 7px 14px; border-radius: 8px; border: none; cursor: pointer;
+        font-family: "DM Sans", sans-serif; font-size: 0.8rem; font-weight: 600; transition: all 0.12s;
+      }
+      #snm-root .snm-topbar-btn svg { width: 14px; height: 14px; }
+      #snm-root .snm-btn-primary-sm { background: var(--snm-primary); color: #fff; box-shadow: 0 2px 8px rgba(14,165,233,0.2); }
+      #snm-root .snm-btn-primary-sm:hover { background: var(--snm-primary-hover); }
+      #snm-root .snm-btn-ghost { background: #f1f5f9; color: #475569; border: 1px solid var(--snm-border); }
+      #snm-root .snm-btn-ghost:hover { background: #e2e8f0; color: var(--snm-text-main); }
+
+      /* ── CONTENT ── */
+      #snm-root .snm-content { flex: 1; overflow-y: auto; padding: 24px; }
+      #snm-root .snm-content::-webkit-scrollbar { width: 5px; }
+      #snm-root .snm-content::-webkit-scrollbar-track { background: transparent; }
+      #snm-root .snm-content::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+      /* ── UPLOAD ZONE ── */
+      #snm-root .snm-upload-zone {
+        border: 2px dashed #cbd5e1; border-radius: 14px;
+        padding: 28px; text-align: center; cursor: pointer;
+        background: #fff; transition: all 0.15s; margin-bottom: 24px;
+      }
+      #snm-root .snm-upload-zone:hover, #snm-root .snm-upload-zone.snm-drag { border-color: var(--snm-primary); background: #f0f9ff; }
+      #snm-root .snm-upload-zone.snm-drag { border-style: solid; }
+      #snm-root .snm-upload-icon { font-size: 2rem; margin-bottom: 8px; }
+      #snm-root .snm-upload-zone p { font-size: 0.85rem; color: var(--snm-text-muted); }
+      #snm-root .snm-upload-zone strong { color: var(--snm-primary); }
+      #snm-root .snm-upload-zone small { font-size: 0.72rem; color: var(--snm-text-sub); display: block; margin-top: 4px; }
+      #snm-root .snm-upload-zone.snm-uploading { cursor: default; }
+      #snm-root .snm-upload-progress { display: none; align-items: center; justify-content: center; gap: 10px; }
+      #snm-root .snm-upload-zone.snm-uploading .snm-upload-progress { display: flex; }
+      #snm-root .snm-upload-zone.snm-uploading .snm-upload-default { display: none; }
+
+      /* ── TOOLBAR ── */
+      #snm-root .snm-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+      #snm-root .snm-search { flex: 1; position: relative; }
+      #snm-root .snm-search input {
+        width: 100%; background: #fff; border: 1.5px solid var(--snm-border);
+        border-radius: 9px; padding: 8px 14px 8px 36px;
+        font-size: 0.82rem; font-family: "DM Sans", sans-serif;
+        color: var(--snm-text-main); outline: none; transition: border-color 0.15s;
+      }
+      #snm-root .snm-search input:focus { border-color: var(--snm-primary); }
+      #snm-root .snm-search-icon {
+        position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+        color: var(--snm-text-sub); pointer-events: none;
+      }
+      #snm-root .snm-search-icon svg { width: 14px; height: 14px; }
+      #snm-root .snm-selection-bar {
+        display: none; align-items: center; gap: 8px;
+        background: #eff6ff; border: 1px solid #bfdbfe;
+        border-radius: 9px; padding: 6px 12px; font-size: 0.8rem; color: #1e40af; font-weight: 500;
+      }
+      #snm-root .snm-selection-bar.snm-show { display: flex; }
+      #snm-root .snm-sel-btn {
+        background: none; border: none; cursor: pointer; font-size: 0.78rem;
+        padding: 3px 8px; border-radius: 5px; font-family: "DM Sans", sans-serif;
+        font-weight: 600; transition: background 0.12s;
+      }
+      #snm-root .snm-sel-btn-danger { color: var(--snm-danger); }
+      #snm-root .snm-sel-btn-danger:hover { background: var(--snm-danger-bg); }
+      #snm-root .snm-sel-btn-move { color: #1e40af; }
+      #snm-root .snm-sel-btn-move:hover { background: #dbeafe; }
+      #snm-root .snm-sel-btn-clear { color: var(--snm-text-muted); margin-left: auto; }
+      #snm-root .snm-sel-btn-clear:hover { background: #f1f5f9; }
+
+      /* ── GRID VIEW ── */
+      #snm-root .snm-grid {
+        display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px;
+      }
+      #snm-root .snm-folder-card {
+        background: #fff; border: 1.5px solid var(--snm-border); border-radius: 12px;
+        padding: 14px 12px; cursor: pointer; transition: all 0.15s;
+        display: flex; align-items: center; gap: 10px; position: relative;
+      }
+      #snm-root .snm-folder-card:hover { border-color: #93c5fd; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+      #snm-root .snm-folder-card-icon { font-size: 1.4rem; flex-shrink: 0; }
+      #snm-root .snm-folder-card-info { min-width: 0; }
+      #snm-root .snm-folder-card-name { font-size: 0.78rem; font-weight: 600; color: var(--snm-text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      #snm-root .snm-folder-card-count { font-size: 0.68rem; color: var(--snm-text-sub); margin-top: 2px; }
+
+      #snm-root .snm-image-card {
+        background: #fff; border: 1.5px solid var(--snm-border); border-radius: 12px;
+        overflow: hidden; cursor: pointer; transition: all 0.15s; position: relative; user-select: none;
+      }
+      #snm-root .snm-image-card:hover { border-color: #93c5fd; box-shadow: 0 6px 20px rgba(0,0,0,0.1); transform: translateY(-2px); }
+      #snm-root .snm-image-card.snm-selected { border-color: var(--snm-primary); box-shadow: 0 0 0 2px rgba(14,165,233,0.3); }
+      #snm-root .snm-img-thumb { aspect-ratio: 4/3; overflow: hidden; background: #f1f5f9; position: relative; }
+      #snm-root .snm-img-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.25s; }
+      #snm-root .snm-image-card:hover .snm-img-thumb img { transform: scale(1.05); }
+      #snm-root .snm-img-overlay {
+        position: absolute; inset: 0; background: rgba(15,23,42,0.65);
+        opacity: 0; transition: opacity 0.18s; display: flex; align-items: center; justify-content: center; gap: 8px;
+      }
+      #snm-root .snm-image-card:hover .snm-img-overlay { opacity: 1; }
+      #snm-root .snm-overlay-btn {
+        width: 34px; height: 34px; background: rgba(255,255,255,0.9);
+        border: none; border-radius: 50%; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        color: var(--snm-text-main); transition: all 0.12s; flex-shrink: 0;
+      }
+      #snm-root .snm-overlay-btn:hover { background: #fff; transform: scale(1.1); }
+      #snm-root .snm-overlay-btn svg { width: 15px; height: 15px; }
+      #snm-root .snm-img-check {
+        position: absolute; top: 8px; left: 8px;
+        width: 20px; height: 20px; border-radius: 50%;
+        background: #fff; border: 2px solid #cbd5e1;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; transition: all 0.12s; z-index: 2;
+      }
+      #snm-root .snm-img-check:hover, #snm-root .snm-image-card.snm-selected .snm-img-check {
+        border-color: var(--snm-primary); background: var(--snm-primary);
+      }
+      #snm-root .snm-img-check svg { width: 11px; height: 11px; color: #fff; display: none; }
+      #snm-root .snm-image-card.snm-selected .snm-img-check svg { display: block; }
+      #snm-root .snm-img-info { padding: 10px 12px; }
+      #snm-root .snm-img-name { font-size: 0.73rem; font-weight: 600; color: var(--snm-text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      #snm-root .snm-img-meta { font-size: 0.65rem; color: var(--snm-text-sub); margin-top: 2px; }
+
+      /* ── LIST VIEW ── */
+      #snm-root .snm-list { display: flex; flex-direction: column; gap: 2px; }
+      #snm-root .snm-list-header {
+        display: grid; grid-template-columns: 40px 1fr 100px 120px 100px;
+        padding: 6px 12px; font-size: 0.68rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.6px; color: var(--snm-text-sub);
+        border-bottom: 1px solid var(--snm-border); margin-bottom: 4px;
+      }
+      #snm-root .snm-list-row {
+        display: grid; grid-template-columns: 40px 1fr 100px 120px 100px;
+        padding: 8px 12px; background: #fff; border-radius: 8px;
+        border: 1px solid transparent; align-items: center;
+        cursor: pointer; transition: all 0.12s; font-size: 0.8rem;
+      }
+      #snm-root .snm-list-row:hover { border-color: var(--snm-border); box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+      #snm-root .snm-list-row.snm-selected { border-color: #bfdbfe; background: #eff6ff; }
+      #snm-root .snm-list-thumb { width: 32px; height: 32px; border-radius: 5px; object-fit: cover; background: #f1f5f9; }
+      #snm-root .snm-list-name { color: var(--snm-text-main); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 12px; }
+      #snm-root .snm-list-folder { color: var(--snm-text-muted); font-size: 0.75rem; }
+      #snm-root .snm-list-date { color: var(--snm-text-muted); font-size: 0.75rem; }
+      #snm-root .snm-list-actions { display: flex; gap: 4px; justify-content: flex-end; }
+      #snm-root .snm-list-btn {
+        background: none; border: none; cursor: pointer; color: var(--snm-text-sub);
+        padding: 5px; border-radius: 5px; transition: all 0.12s; display: flex; align-items: center;
+      }
+      #snm-root .snm-list-btn:hover { background: #f1f5f9; color: var(--snm-text-main); }
+      #snm-root .snm-list-btn svg { width: 14px; height: 14px; }
+
+      /* ── EMPTY STATE ── */
+      #snm-root .snm-empty { text-align: center; padding: 60px 20px; color: var(--snm-text-sub); }
+      #snm-root .snm-empty-icon { font-size: 3rem; margin-bottom: 12px; }
+      #snm-root .snm-empty p { font-size: 0.88rem; }
+      #snm-root .snm-empty small { font-size: 0.75rem; color: #cbd5e1; }
+
+      /* ── LOADING ── */
+      #snm-root .snm-loading-state {
+        display: flex; align-items: center; justify-content: center;
+        padding: 60px; gap: 10px; color: var(--snm-text-muted); font-size: 0.85rem;
+      }
+      #snm-root .snm-pulse {
+        width: 18px; height: 18px; border: 2px solid var(--snm-primary);
+        border-top-color: transparent; border-radius: 50%; animation: snm-spin 0.7s linear infinite;
+      }
+
+      /* ── CONTEXT MENU ── */
+      #snm-root .snm-ctx-menu {
+        position: fixed; z-index: 8000; background: #fff;
+        border: 1px solid var(--snm-border); border-radius: 10px;
+        box-shadow: 0 10px 32px rgba(0,0,0,0.14); padding: 5px;
+        min-width: 180px; display: none;
+      }
+      #snm-root .snm-ctx-menu.snm-show { display: block; }
+      #snm-root .snm-ctx-item {
+        display: flex; align-items: center; gap: 9px;
+        padding: 8px 12px; border-radius: 6px; cursor: pointer;
+        font-size: 0.8rem; color: var(--snm-text-main); transition: background 0.1s;
+      }
+      #snm-root .snm-ctx-item:hover { background: #f1f5f9; }
+      #snm-root .snm-ctx-item svg { width: 13px; height: 13px; color: var(--snm-text-muted); }
+      #snm-root .snm-ctx-item.snm-danger { color: var(--snm-danger); }
+      #snm-root .snm-ctx-item.snm-danger svg { color: var(--snm-danger); }
+      #snm-root .snm-ctx-item.snm-danger:hover { background: var(--snm-danger-bg); }
+      #snm-root .snm-ctx-sep { height: 1px; background: #f1f5f9; margin: 4px 0; }
+
+      /* ── LIGHTBOX ── */
+      #snm-root .snm-lightbox {
+        position: fixed; inset: 0; z-index: 7000;
+        background: rgba(15,23,42,0.92); backdrop-filter: blur(6px);
+        display: none; align-items: center; justify-content: center; padding: 20px;
+      }
+      #snm-root .snm-lightbox.snm-show { display: flex; }
+      #snm-root .snm-lightbox-inner {
+        background: #fff; border-radius: 16px; overflow: hidden;
+        max-width: 800px; width: 100%; box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+        display: flex; flex-direction: column; position: relative;
+      }
+      #snm-root .snm-lightbox-img-wrap {
+        background: #0f172a; display: flex; align-items: center; justify-content: center;
+        min-height: 300px; max-height: 55vh; overflow: hidden;
+      }
+      #snm-root .snm-lightbox-img-wrap img { max-width: 100%; max-height: 55vh; object-fit: contain; }
+      #snm-root .snm-lightbox-bottom { padding: 16px 20px; }
+      #snm-root .snm-lightbox-title { font-weight: 600; font-size: 0.88rem; color: var(--snm-text-main); margin-bottom: 10px; }
+      #snm-root .snm-url-row { display: flex; gap: 8px; align-items: center; }
+      #snm-root .snm-url-input {
+        flex: 1; background: #f8fafc; border: 1.5px solid var(--snm-border);
+        border-radius: 8px; padding: 9px 12px; font-size: 0.75rem;
+        font-family: "DM Sans", sans-serif; color: #475569; outline: none; cursor: text;
+      }
+      #snm-root .snm-url-input:focus { border-color: var(--snm-primary); }
+      #snm-root .snm-copy-btn {
+        display: flex; align-items: center; gap: 6px;
+        padding: 9px 16px; background: var(--snm-primary); color: #fff;
+        border: none; border-radius: 8px; cursor: pointer;
+        font-family: "DM Sans", sans-serif; font-size: 0.8rem;
+        font-weight: 600; transition: all 0.12s; white-space: nowrap;
+      }
+      #snm-root .snm-copy-btn svg { width: 13px; height: 13px; }
+      #snm-root .snm-copy-btn:hover { background: var(--snm-primary-hover); }
+      #snm-root .snm-copy-btn.snm-copied { background: #059669; }
+      #snm-root .snm-lightbox-close {
+        position: absolute; top: 16px; right: 16px; z-index: 10;
+        background: rgba(255,255,255,0.15); border: none; border-radius: 50%;
+        width: 36px; height: 36px; cursor: pointer; color: #fff;
+        display: flex; align-items: center; justify-content: center; transition: background 0.12s;
+      }
+      #snm-root .snm-lightbox-close:hover { background: rgba(255,255,255,0.25); }
+      #snm-root .snm-lightbox-close svg { width: 16px; height: 16px; }
+
+      /* ── MOVE MODAL ── */
+      #snm-root .snm-modal-overlay {
+        position: fixed; inset: 0; z-index: 8500;
+        background: rgba(15,23,42,0.6); backdrop-filter: blur(4px);
+        display: none; align-items: center; justify-content: center; padding: 20px;
+      }
+      #snm-root .snm-modal-overlay.snm-show { display: flex; }
+      #snm-root .snm-modal {
+        background: #fff; border-radius: 14px; padding: 24px;
+        width: 100%; max-width: 380px; box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+      }
+      #snm-root .snm-modal h3 { font-size: 0.95rem; font-weight: 700; color: var(--snm-text-main); margin-bottom: 16px; }
+      #snm-root .snm-folder-option {
+        padding: 9px 12px; border-radius: 8px; cursor: pointer;
+        font-size: 0.82rem; color: var(--snm-text-main); transition: background 0.1s;
+        display: flex; align-items: center; gap: 8px;
+      }
+      #snm-root .snm-folder-option:hover { background: #f1f5f9; }
+      #snm-root .snm-folder-option.snm-selected-opt { background: #eff6ff; color: #1e40af; font-weight: 600; }
+      #snm-root .snm-modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+      #snm-root .snm-modal-btn {
+        padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer;
+        font-family: "DM Sans", sans-serif; font-size: 0.82rem; font-weight: 600; transition: all 0.12s;
+      }
+      #snm-root .snm-modal-btn-cancel { background: #f1f5f9; color: #475569; }
+      #snm-root .snm-modal-btn-cancel:hover { background: #e2e8f0; }
+      #snm-root .snm-modal-btn-confirm { background: var(--snm-primary); color: #fff; }
+      #snm-root .snm-modal-btn-confirm:hover { background: var(--snm-primary-hover); }
+
+      /* ── TOAST ── */
+      #snm-root .snm-toast {
+        position: fixed; bottom: 24px; right: 24px; z-index: 9500;
+        display: flex; align-items: center; gap: 10px;
+        padding: 12px 18px; border-radius: 10px; font-size: 0.82rem; font-weight: 500;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        transform: translateY(16px) scale(0.97); opacity: 0;
+        transition: all 0.22s ease; pointer-events: none;
+      }
+      #snm-root .snm-toast.snm-show { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
+      #snm-root .snm-toast.snm-success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+      #snm-root .snm-toast.snm-error { background: #fff1f2; color: #9f1239; border: 1px solid #fecdd3; }
+      #snm-root .snm-toast.snm-info { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+      #snm-root .snm-toast svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+      /* ── NEW FOLDER BUTTON ROW ── */
+      #snm-root .snm-new-folder-row { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+      #snm-root .snm-new-folder-input-wrap { display: none; align-items: center; gap: 8px; flex: 1; }
+      #snm-root .snm-new-folder-input-wrap.snm-show { display: flex; }
+      #snm-root .snm-new-folder-input {
+        flex: 1; border: 1.5px solid var(--snm-border); border-radius: 8px;
+        padding: 7px 12px; font-size: 0.82rem; font-family: "DM Sans", sans-serif;
+        color: var(--snm-text-main); outline: none; background: #fff; transition: border-color 0.15s;
+      }
+      #snm-root .snm-new-folder-input:focus { border-color: var(--snm-primary); }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 768px) {
+        #snm-root .snm-sidebar { width: 0; overflow: hidden; }
+        #snm-root .snm-list-header, #snm-root .snm-list-row { grid-template-columns: 40px 1fr 80px; }
+        #snm-root .snm-list-folder, #snm-root .snm-list-date { display: none; }
+        #snm-root .snm-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+      }
+    </style>
+  </head>
+  <body>
+  <div id="snm-root">
+
+    <!-- LOGIN OVERLAY -->
+    <div class="snm-login-overlay" id="snmLoginOverlay">
+      <div class="snm-login-card">
+        <div class="snm-login-logo">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="24" height="24" rx="6" fill="url(#snm-grad)"/>
+            <defs><linearGradient id="snm-grad" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#0ea5e9"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs>
+            <path d="M5 8h14M5 8a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v0a2 2 0 01-2 2M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8M10 13l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="snm-login-logo-text">SaiuNa<span>Mídia</span></span>
+        </div>
+        <p class="snm-login-sub">Repositório de mídias · Publicidade COPASA</p>
+        <div id="snmLoginError" class="snm-login-error">Usuário ou senha inválidos.</div>
+        <form id="snmLoginForm" autocomplete="off">
+          <div class="snm-field">
+            <label>Usuário</label>
+            <input type="text" id="snmLoginUser" placeholder="seu.usuario" autocomplete="off" />
+          </div>
+          <div class="snm-field">
+            <label>Senha</label>
+            <input type="password" id="snmLoginPass" placeholder="••••••••" />
+          </div>
+          <button type="submit" class="snm-btn-login" id="snmLoginBtn">
+            <span class="snm-btn-text">Entrar</span>
+            <span class="snm-spinner"></span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- SHELL -->
+    <div class="snm-shell" id="snmShell" style="display:none">
+
+      <!-- SIDEBAR -->
+      <aside class="snm-sidebar">
+        <div class="snm-sidebar-header">
+          <div class="snm-brand">
+            <div class="snm-brand-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <span class="snm-brand-name">SaiuNa<span>Mídia</span></span>
+          </div>
+        </div>
+
+        <div class="snm-sidebar-section">
+          <div class="snm-sidebar-label-wrap">
+            <span class="snm-sidebar-label">Navegação</span>
+          </div>
+          <div class="snm-nav-item snm-active" id="snmNavAll" onclick="SNM.navigateTo('')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span class="snm-nav-text">Início</span>
+            <span class="snm-nav-count" id="snmTotalCount">0</span>
+          </div>
+        </div>
+
+        <div class="snm-sidebar-section" style="padding-bottom:6px">
+          <div class="snm-sidebar-label-wrap">
+            <span class="snm-sidebar-label">Pastas</span>
+            <button class="snm-btn-add-folder-icon" onclick="SNM.showNewFolder()" title="Nova Pasta">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="snm-folder-tree" id="snmFolderTree">
+          <!-- folders rendered here -->
+        </div>
+
+        <div class="snm-sidebar-footer">
+          <div class="snm-user-card">
+            <div class="snm-avatar" id="snmAvatarInitial">?</div>
+            <div class="snm-user-info">
+              <div class="snm-user-name" id="snmUserName">—</div>
+              <div class="snm-user-role">Publicidade COPASA</div>
+            </div>
+            <button class="snm-logout-btn" id="snmLogoutBtn" title="Sair">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="snm-main">
+
+        <!-- TOPBAR -->
+        <div class="snm-topbar">
+          <div class="snm-breadcrumb" id="snmBreadcrumb">
+            <span class="snm-breadcrumb-item snm-current">Início</span>
+          </div>
+          <div class="snm-topbar-actions">
+            <div class="snm-view-toggle">
+              <button class="snm-view-btn snm-active" id="snmViewGrid" title="Grade" onclick="SNM.setView('grid')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              </button>
+              <button class="snm-view-btn" id="snmViewList" title="Lista" onclick="SNM.setView('list')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              </button>
+            </div>
+            <button class="snm-topbar-btn snm-btn-ghost" onclick="SNM.showNewFolder()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
+              Nova pasta
+            </button>
+            <button class="snm-topbar-btn snm-btn-primary-sm" onclick="document.getElementById('snmFileInput').click()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+              Upload
+            </button>
+          </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="snm-content" id="snmContent">
+
+          <!-- UPLOAD ZONE -->
+          <div class="snm-upload-zone" id="snmDropZone">
+            <input type="file" id="snmFileInput" multiple accept="image/*" style="display:none" />
+            <div class="snm-upload-default">
+              <div class="snm-upload-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:44px;height:44px"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+              <p>Arraste imagens aqui ou <strong>clique para selecionar</strong></p>
+              <small>JPG, PNG, WebP, GIF, SVG · máx 10MB por arquivo</small>
+            </div>
+            <div class="snm-upload-progress">
+              <div class="snm-pulse"></div>
+              <span id="snmUploadStatus" style="font-size:0.85rem;color:#64748b">Enviando...</span>
+            </div>
+          </div>
+
+          <!-- TOOLBAR -->
+          <div class="snm-toolbar">
+            <div class="snm-search">
+              <span class="snm-search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+              <input type="text" id="snmSearch" placeholder="Buscar imagens..." oninput="SNM.filterImages(this.value)" />
+            </div>
+            <div class="snm-selection-bar" id="snmSelectionBar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="20 6 9 17 4 12"/></svg>
+              <span id="snmSelCount">0</span> selecionada(s)
+              <button class="snm-sel-btn snm-sel-btn-move" onclick="SNM.showMoveModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>Mover</button>
+              <button class="snm-sel-btn snm-sel-btn-danger" onclick="SNM.deleteSelected()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>Deletar</button>
+              <button class="snm-sel-btn snm-sel-btn-clear" onclick="SNM.clearSelection()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;vertical-align:-2px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            </div>
+          </div>
+
+          <!-- NEW FOLDER INPUT -->
+          <div class="snm-new-folder-row" id="snmNewFolderRow" style="display:none">
+            <div class="snm-new-folder-input-wrap snm-show">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;color:#f59e0b;flex-shrink:0"><path d="M19.5 21a3 3 0 003-3v-4.5a3 3 0 00-3-3h-15a3 3 0 00-3 3V18a3 3 0 003 3h15zM1.5 10.146V6a3 3 0 013-3h5.379a2.25 2.25 0 011.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 013 3v1.146A4.483 4.483 0 0019.5 9h-15a4.483 4.483 0 00-3 1.146z"/></svg>
+              <input type="text" class="snm-new-folder-input" id="snmNewFolderInput" placeholder="Nome da nova pasta..." />
+              <button class="snm-topbar-btn snm-btn-primary-sm" onclick="SNM.createFolder()" style="font-size:0.78rem;padding:6px 12px">Criar</button>
+              <button class="snm-topbar-btn snm-btn-ghost" onclick="SNM.hideNewFolder()" style="font-size:0.78rem;padding:6px 12px">Cancelar</button>
+            </div>
+          </div>
+
+          <!-- ITEMS AREA -->
+          <div id="snmItemsArea">
+            <div class="snm-loading-state"><div class="snm-pulse"></div> Carregando...</div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- CONTEXT MENU -->
+    <div class="snm-ctx-menu" id="snmCtxMenu">
+      <div class="snm-ctx-item" id="snmCtxCopy">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        Copiar URL
+      </div>
+      <div class="snm-ctx-item" id="snmCtxPreview">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Visualizar
+      </div>
+      <div class="snm-ctx-item" id="snmCtxMove">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/></svg>
+        Mover para...
+      </div>
+      <div class="snm-ctx-sep"></div>
+      <div class="snm-ctx-item snm-danger" id="snmCtxDelete">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        Deletar
+      </div>
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div class="snm-lightbox" id="snmLightbox">
+      <button class="snm-lightbox-close" onclick="SNM.closeLightbox()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="snm-lightbox-inner">
+        <div class="snm-lightbox-img-wrap">
+          <img id="snmLightboxImg" src="" alt="" />
+        </div>
+        <div class="snm-lightbox-bottom">
+          <div class="snm-lightbox-title" id="snmLightboxTitle">—</div>
+          <div class="snm-url-row">
+            <input class="snm-url-input" id="snmLightboxUrl" readonly value="" onclick="this.select()" />
+            <button class="snm-copy-btn" id="snmCopyBtn" onclick="SNM.copyUrl()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              Copiar URL
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOVE MODAL -->
+    <div class="snm-modal-overlay" id="snmMoveModal">
+      <div class="snm-modal">
+        <h3>Mover para pasta</h3>
+        <div id="snmMoveFolderList">
+          <div class="snm-folder-option" data-path="" onclick="SNM.selectMoveTarget(this, '')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;color:#0ea5e9"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Início (raiz)
+          </div>
+        </div>
+        <div class="snm-modal-actions">
+          <button class="snm-modal-btn snm-modal-btn-cancel" onclick="SNM.closeMoveModal()">Cancelar</button>
+          <button class="snm-modal-btn snm-modal-btn-confirm" onclick="SNM.confirmMove()">Mover</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="snm-toast" id="snmToast">
+      <svg id="snmToastIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+      <span id="snmToastMsg"></span>
+    </div>
+
+  </div><!-- #snm-root -->
+
+  <script>
+  (function () {
+    "use strict";
+
+    /* ─── CONFIG ─── */
+    const API_BASE = "";
+
+    /* ─── STATE ─── */
+    const state = {
+      token: null,
+      currentFolder: "",
+      view: "grid",
+      images: [],
+      folders: [],
+      selected: new Set(),
+      ctxTarget: null,
+      moveTarget: null,
+      searchQuery: ""
+    };
+
+    /* ─── SVG ICONS ─── */
+    const SVG_EYE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+    const SVG_COPY = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>`;
+    const SVG_CHECK = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+    const SVG_TRASH = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>`;
+    const SVG_FOLDER_CARD = `<svg viewBox="0 0 24 24" fill="currentColor" style="width:28px;height:28px;color:#f59e0b;flex-shrink:0"><path d="M19.5 21a3 3 0 003-3v-4.5a3 3 0 00-3-3h-15a3 3 0 00-3 3V18a3 3 0 003 3h15zM1.5 10.146V6a3 3 0 013-3h5.379a2.25 2.25 0 011.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 013 3v1.146A4.483 4.483 0 0019.5 9h-15a4.483 4.483 0 00-3 1.146z"/></svg>`;
+    const SVG_FOLDER_ROW = `<svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;color:#f59e0b;flex-shrink:0"><path d="M19.5 21a3 3 0 003-3v-4.5a3 3 0 00-3-3h-15a3 3 0 00-3 3V18a3 3 0 003 3h15zM1.5 10.146V6a3 3 0 013-3h5.379a2.25 2.25 0 011.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 013 3v1.146A4.483 4.483 0 0019.5 9h-15a4.483 4.483 0 00-3 1.146z"/></svg>`;
+    const SVG_EMPTY_BOX = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:48px;height:48px;color:#94a3b8"><path d="M22 12h-6l-2 3h-4l-2-3H2v7a2 2 0 002 2h16a2 2 0 002-2v-7z"/><path d="M5.45 5.11L2 12v0h20v0l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>`;
+    const SVG_HOME = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;color:#0ea5e9;vertical-align:-2px"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`;
+    const SVG_FOLDER_SM = `<svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px;color:#f59e0b;vertical-align:-2px"><path d="M19.5 21a3 3 0 003-3v-4.5a3 3 0 00-3-3h-15a3 3 0 00-3 3V18a3 3 0 003 3h15zM1.5 10.146V6a3 3 0 013-3h5.379a2.25 2.25 0 011.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 013 3v1.146A4.483 4.483 0 0019.5 9h-15a4.483 4.483 0 00-3 1.146z"/></svg>`;
+
+    /* ─── UTILS ─── */
+    const $ = (id) => document.getElementById(id);
+
+    function fmt(bytes) {
+      if (!bytes) return "—";
+      if (bytes < 1024) return bytes + " B";
+      if (bytes < 1048576) return (bytes / 1024).toFixed(1) + " KB";
+      return (bytes / 1048576).toFixed(1) + " MB";
+    }
+
+    function fmtDate(str) {
+      if (!str) return "—";
+      try {
+        return new Date(str).toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" });
+      } catch {
+        return str;
+      }
+    }
+
+    function esc(s) {
+      return String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    function authHeaders() {
+      return state.token ? { Authorization: `Bearer ${state.token}` } : {};
+    }
+
+    let toastTimer;
+    function toast(msg, type = "info") {
+      const t = $("snmToast");
+      const icon = $("snmToastIcon");
+      const txt = $("snmToastMsg");
+      t.className = `snm-toast snm-${type}`;
+      txt.textContent = msg;
+
+      const icons = {
+        success: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+        error: '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
+        info: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>'
+      };
+      icon.innerHTML = icons[type] || icons.info;
+
+      t.classList.add("snm-show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove("snm-show"), 3000);
+    }
+
+    /* ─── AUTH ─── */
+    function checkAuth() {
+      const tk = sessionStorage.getItem("snm_token");
+      if (tk) {
+        state.token = tk;
+        showShell();
+      } else {
+        const overlay = $("snmLoginOverlay");
+        if (overlay) overlay.classList.remove("snm-hidden");
+        $("snmShell").style.display = "none";
+      }
+    }
+
+    function showShell() {
+      const overlay = $("snmLoginOverlay");
+      if (overlay) overlay.classList.add("snm-hidden");
+      $("snmShell").style.display = "flex";
+      const user = sessionStorage.getItem("snm_user") || "Usuário";
+      $("snmUserName").textContent = user;
+      $("snmAvatarInitial").textContent = user.charAt(0).toUpperCase();
+      loadAll();
+    }
+
+    $("snmLoginForm")?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = $("snmLoginBtn");
+      btn.classList.add("snm-loading");
+      $("snmLoginError").classList.remove("snm-show");
+
+      const params = new URLSearchParams();
+      params.append("username", $("snmLoginUser").value.trim());
+      params.append("password", $("snmLoginPass").value);
+
+      try {
+        const res = await fetch(`${API_BASE}/auth/token`, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: params
+        });
+        if (res.ok) {
+          const data = await res.json();
+          state.token = data.access_token;
+          sessionStorage.setItem("snm_token", data.access_token);
+          sessionStorage.setItem("snm_user", $("snmLoginUser").value.trim());
+          showShell();
+        } else {
+          $("snmLoginError").classList.add("snm-show");
+        }
+      } catch {
+        toast("Erro de conexão com o servidor.", "error");
+      } finally {
+        btn.classList.remove("snm-loading");
+      }
+    });
+
+    $("snmLogoutBtn").addEventListener("click", () => {
+      sessionStorage.clear();
+      state.token = null;
+      $("snmShell").style.display = "none";
+      const overlay = $("snmLoginOverlay");
+      if (overlay) overlay.classList.remove("snm-hidden");
+    });
+
+    /* ─── DATA ─── */
+    async function loadAll() {
+      await Promise.all([loadFolders(), loadImages(state.currentFolder)]);
+    }
+
+    async function loadFolders() {
+      try {
+        const url = `${API_BASE}/folders${state.currentFolder ? "?parent=" + encodeURIComponent(state.currentFolder) : ""}`;
+        const res = await fetch(url, { headers: authHeaders() });
+        if (!res.ok) return;
+        state.folders = await res.json();
+        renderFolderTree(state.folders);
+        renderMoveFolderList();
+      } catch {}
+    }
+
+    async function loadImages(folder) {
+      $("snmItemsArea").innerHTML = '<div class="snm-loading-state"><div class="snm-pulse"></div> Carregando...</div>';
+      try {
+        const url = `${API_BASE}/images${folder ? "?folder=" + encodeURIComponent(folder) : ""}`;
+        const res = await fetch(url, { headers: authHeaders() });
+        state.images = res.ok ? await res.json() : [];
+      } catch {
+        state.images = [];
+      }
+      $("snmTotalCount").textContent = state.images.length;
+      render();
+    }
+
+    /* ─── RENDER ─── */
+    function render() {
+      const query = (state.searchQuery || "").toLowerCase();
+      const imgs = state.images.filter((img) =>
+        !query || (img.name || img.key || "").toLowerCase().includes(query)
+      );
+      const area = $("snmItemsArea");
+
+      if (state.view === "grid") {
+        renderGrid(area, imgs);
+      } else {
+        renderList(area, imgs);
+      }
+      updateSelectionBar();
+    }
+
+    function renderGrid(area, imgs) {
+      const parts = ['<div class="snm-grid">'];
+
+      state.folders.forEach((f) => {
+        parts.push(`
+          <div class="snm-folder-card" data-folder-path="${esc(f.path)}">
+            <span class="snm-folder-card-icon">${SVG_FOLDER_CARD}</span>
+            <div class="snm-folder-card-info">
+              <div class="snm-folder-card-name">${esc(f.name)}</div>
+              <div class="snm-folder-card-count">Pasta</div>
+            </div>
+          </div>
+        `);
+      });
+
+      if (imgs.length === 0 && state.folders.length === 0) {
+        parts.push(`</div><div class="snm-empty"><div class="snm-empty-icon">${SVG_EMPTY_BOX}</div><p>Pasta vazia</p><small>Arraste imagens para começar</small></div>`);
+        area.innerHTML = parts.join('');
+        return;
+      }
+
+      imgs.forEach((img) => {
+        const isSel = state.selected.has(img.key) ? " snm-selected" : "";
+        parts.push(`
+          <div class="snm-image-card${isSel}" data-key="${esc(img.key)}">
+            <div class="snm-img-thumb">
+              <img src="${esc(img.url)}" alt="${esc(img.name || img.key)}" loading="lazy" />
+              <div class="snm-img-overlay">
+                <button class="snm-overlay-btn" data-action="preview" data-key="${esc(img.key)}" title="Visualizar">${SVG_EYE}</button>
+                <button class="snm-overlay-btn" data-action="copy" data-key="${esc(img.key)}" title="Copiar URL">${SVG_COPY}</button>
+              </div>
+              <div class="snm-img-check" data-action="select" data-key="${esc(img.key)}">${SVG_CHECK}</div>
+            </div>
+            <div class="snm-img-info">
+              <div class="snm-img-name">${esc(img.name || img.key)}</div>
+              <div class="snm-img-meta">${fmt(img.size)}</div>
+            </div>
+          </div>
+        `);
+      });
+
+      parts.push('</div>');
+      area.innerHTML = parts.join('');
+    }
+
+    function renderList(area, imgs) {
+      if (imgs.length === 0 && state.folders.length === 0) {
+        area.innerHTML = `<div class="snm-empty"><div class="snm-empty-icon">${SVG_EMPTY_BOX}</div><p>Pasta vazia</p><small>Arraste imagens para começar</small></div>`;
+        return;
+      }
+
+      const parts = [
+        '<div class="snm-list">',
+        '<div class="snm-list-header"><span></span><span>Nome</span><span>Tamanho</span><span>Data</span><span></span></div>'
+      ];
+
+      state.folders.forEach((f) => {
+        parts.push(`
+          <div class="snm-list-row" data-folder-path="${esc(f.path)}">
+            <span>${SVG_FOLDER_ROW}</span>
+            <span class="snm-list-name">${esc(f.name)}</span>
+            <span class="snm-list-folder">Pasta</span>
+            <span class="snm-list-date">—</span>
+            <span></span>
+          </div>
+        `);
+      });
+
+      imgs.forEach((img) => {
+        const isSel = state.selected.has(img.key) ? " snm-selected" : "";
+        parts.push(`
+          <div class="snm-list-row${isSel}" data-key="${esc(img.key)}">
+            <img class="snm-list-thumb" src="${esc(img.url)}" loading="lazy" />
+            <span class="snm-list-name">${esc(img.name || img.key)}</span>
+            <span class="snm-list-folder">${fmt(img.size)}</span>
+            <span class="snm-list-date">${fmtDate(img.uploadedAt)}</span>
+            <span class="snm-list-actions">
+              <button class="snm-list-btn" data-action="preview" data-key="${esc(img.key)}" title="Visualizar">${SVG_EYE}</button>
+              <button class="snm-list-btn" data-action="copy" data-key="${esc(img.key)}" title="Copiar URL">${SVG_COPY}</button>
+              <button class="snm-list-btn" data-action="delete" data-key="${esc(img.key)}" title="Deletar" style="color:#f87171">${SVG_TRASH}</button>
+            </span>
+          </div>
+        `);
+      });
+
+      parts.push('</div>');
+      area.innerHTML = parts.join('');
+    }
+
+    function renderFolderTree(folders) {
+      const tree = $("snmFolderTree");
+      if (!folders || folders.length === 0) {
+        tree.innerHTML = '<p class="snm-empty-folders">Nenhuma pasta criada</p>';
+        return;
+      }
+      const html = folders.map((f) => {
+        const active = state.currentFolder === f.path ? " snm-active" : "";
+        return `
+          <div class="snm-folder-node">
+            <div class="snm-folder-row${active}" onclick="SNM.navigateTo('${esc(f.path)}')">
+              <svg class="snm-folder-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.5 21a3 3 0 003-3v-4.5a3 3 0 00-3-3h-15a3 3 0 00-3 3V18a3 3 0 003 3h15zM1.5 10.146V6a3 3 0 013-3h5.379a2.25 2.25 0 011.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 013 3v1.146A4.483 4.483 0 0019.5 9h-15a4.483 4.483 0 00-3 1.146z"/>
+              </svg>
+              <span class="snm-folder-name">${esc(f.name)}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+      tree.innerHTML = html;
+    }
+
+    function renderMoveFolderList() {
+      const list = $("snmMoveFolderList");
+      let html = `<div class="snm-folder-option" data-path="" onclick="SNM.selectMoveTarget(this,\'\')">${SVG_HOME} Início (raiz)</div>`;
+      html += (state.folders || []).map((f) =>
+        `<div class="snm-folder-option" data-path="${esc(f.path)}" onclick="SNM.selectMoveTarget(this,'${esc(f.path)}')">${SVG_FOLDER_SM} ${esc(f.name)}</div>`
+      ).join('');
+      list.innerHTML = html;
+    }
+
+    /* ─── EVENT DELEGATION FOR ITEMS AREA ─── */
+    const itemsArea = $("snmItemsArea");
+
+    itemsArea.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-action]");
+      if (!btn) return;
+      e.stopPropagation();
+      const { action, key } = btn.dataset;
+
+      if (action === "select") SNM.toggleSelect(e, key);
+      else if (action === "preview") SNM.openLightbox(key);
+      else if (action === "copy") SNM.copyImageUrl(key);
+      else if (action === "delete") SNM.deleteSingle(key);
+    });
+
+    itemsArea.addEventListener("dblclick", (e) => {
+      const folderCard = e.target.closest("[data-folder-path]");
+      if (folderCard) {
+        SNM.navigateTo(folderCard.dataset.folderPath);
+      }
+    });
+
+    itemsArea.addEventListener("contextmenu", (e) => {
+      const imgCard = e.target.closest("[data-key]");
+      if (imgCard) {
+        SNM.ctxImage(e, imgCard.dataset.key);
+        return;
+      }
+      const folderCard = e.target.closest("[data-folder-path]");
+      if (folderCard) {
+        SNM.ctxFolder(e, folderCard.dataset.folderPath);
+      }
+    });
+
+    /* ─── NAVIGATION ─── */
+    window.SNM = window.SNM || {};
+
+    SNM.navigateTo = function (path) {
+      state.currentFolder = path;
+      state.selected.clear();
+      state.searchQuery = "";
+      $("snmSearch").value = "";
+      updateBreadcrumb(path);
+      updateNavActive(path);
+      loadAll();
+    };
+
+    function updateBreadcrumb(path) {
+      const bc = $("snmBreadcrumb");
+      if (!path) {
+        bc.innerHTML = '<span class="snm-breadcrumb-item snm-current">Início</span>';
+        return;
+      }
+      let html = '<span class="snm-breadcrumb-item" onclick="SNM.navigateTo(\'\')">Início</span>';
+      const parts = path.split("/");
+      let built = "";
+      parts.forEach((p, i) => {
+        built += (built ? "/" : "") + p;
+        html += '<span class="snm-breadcrumb-sep">›</span>';
+        if (i === parts.length - 1) {
+          html += `<span class="snm-breadcrumb-item snm-current">${esc(p)}</span>`;
+        } else {
+          html += `<span class="snm-breadcrumb-item" onclick="SNM.navigateTo('${esc(built)}')">${esc(p)}</span>`;
+        }
+      });
+      bc.innerHTML = html;
+    }
+
+    function updateNavActive(path) {
+      $("snmNavAll").classList.toggle("snm-active", path === "");
+    }
+
+    /* ─── VIEW ─── */
+    SNM.setView = function (v) {
+      state.view = v;
+      $("snmViewGrid").classList.toggle("snm-active", v === "grid");
+      $("snmViewList").classList.toggle("snm-active", v === "list");
+      render();
+    };
+
+    /* ─── SEARCH (DEBOUCED) ─── */
+    let searchDebounceTimer;
+    SNM.filterImages = function (q) {
+      state.searchQuery = q;
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(render, 150);
+    };
+
+    /* ─── UPLOAD (CONCURRENT BATCHING) ─── */
+    const dropZone = $("snmDropZone");
+    const fileInput = $("snmFileInput");
+
+    dropZone.addEventListener("click", () => fileInput.click());
+    dropZone.addEventListener("dragover", (e) => { e.preventDefault(); dropZone.classList.add("snm-drag"); });
+    dropZone.addEventListener("dragleave", () => dropZone.classList.remove("snm-drag"));
+    dropZone.addEventListener("drop", (e) => {
+      e.preventDefault(); dropZone.classList.remove("snm-drag");
+      uploadFiles(e.dataTransfer.files);
+    });
+    fileInput.addEventListener("change", (e) => uploadFiles(e.target.files));
+
+    async function uploadFiles(files) {
+      if (!files || !files.length) return;
+      dropZone.classList.add("snm-uploading");
+      const status = $("snmUploadStatus");
+      let uploaded = 0;
+
+      const fileArray = Array.from(files);
+      const BATCH_SIZE = 3;
+
+      for (let i = 0; i < fileArray.length; i += BATCH_SIZE) {
+        const batch = fileArray.slice(i, i + BATCH_SIZE);
+        status.textContent = `Enviando ${Math.min(i + BATCH_SIZE, fileArray.length)}/${fileArray.length}...`;
+
+        const uploadPromises = batch.map(async (file) => {
+          const fd = new FormData();
+          fd.append("file", file);
+          fd.append("folder", state.currentFolder);
+          try {
+            const res = await fetch(`${API_BASE}/upload`, { method: "POST", headers: authHeaders(), body: fd });
+            const data = await res.json();
+            if (res.ok) {
+              state.images.unshift(data);
+              return true;
+            } else {
+              toast(data.error || `Erro ao enviar ${file.name}`, "error");
+            }
+          } catch {
+            toast(`Erro de conexão ao enviar ${file.name}`, "error");
+          }
+          return false;
+        });
+
+        const results = await Promise.all(uploadPromises);
+        uploaded += results.filter(Boolean).length;
+      }
+
+      dropZone.classList.remove("snm-uploading");
+      fileInput.value = "";
+      $("snmTotalCount").textContent = state.images.length;
+      render();
+      if (uploaded > 0) toast(`${uploaded} imagem(s) enviada(s)!`, "success");
+    }
+
+    /* ─── SELECTION ─── */
+    SNM.toggleSelect = function (e, key) {
+      if (e) e.stopPropagation();
+      if (state.selected.has(key)) state.selected.delete(key);
+      else state.selected.add(key);
+      render();
+    };
+
+    function updateSelectionBar() {
+      const bar = $("snmSelectionBar");
+      const count = state.selected.size;
+      bar.classList.toggle("snm-show", count > 0);
+      if (count > 0) {
+        $("snmSelCount").textContent = count;
+      }
+    }
+
+    SNM.clearSelection = function () {
+      state.selected.clear();
+      render();
+    };
+
+    /* ─── DELETE (PARALLEL) ─── */
+    SNM.deleteSingle = async function (key) {
+      if (!confirm("Deletar esta imagem?")) return;
+      await doDelete([key]);
+    };
+
+    SNM.deleteSelected = async function () {
+      if (!state.selected.size) return;
+      if (!confirm(`Deletar ${state.selected.size} imagem(s)?`)) return;
+      await doDelete(Array.from(state.selected));
+      state.selected.clear();
+    };
+
+    async function doDelete(keys) {
+      if (!keys.length) return;
+      const deletePromises = keys.map(async (key) => {
+        try {
+          const res = await fetch(`${API_BASE}/images`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json", ...authHeaders() },
+            body: JSON.stringify({ key })
+          });
+          if (res.ok) {
+            state.images = state.images.filter((img) => img.key !== key);
+            return true;
+          }
+        } catch {}
+        return false;
+      });
+
+      const results = await Promise.all(deletePromises);
+      const ok = results.filter(Boolean).length;
+      if (ok) toast(`${ok} imagem(s) deletada(s).`, "success");
+      $("snmTotalCount").textContent = state.images.length;
+      render();
+    }
+
+    /* ─── LIGHTBOX ─── */
+    SNM.openLightbox = function (key) {
+      const img = state.images.find((i) => i.key === key);
+      if (!img) return;
+      $("snmLightboxImg").src = img.url;
+      $("snmLightboxTitle").textContent = img.name || img.key;
+      $("snmLightboxUrl").value = img.url;
+      const copyBtn = $("snmCopyBtn");
+      copyBtn.textContent = "Copiar URL";
+      copyBtn.classList.remove("snm-copied");
+      $("snmLightbox").classList.add("snm-show");
+    };
+
+    SNM.closeLightbox = function () {
+      $("snmLightbox").classList.remove("snm-show");
+    };
+
+    SNM.copyUrl = function () {
+      const url = $("snmLightboxUrl").value;
+      navigator.clipboard.writeText(url).then(() => {
+        const btn = $("snmCopyBtn");
+        btn.classList.add("snm-copied");
+        btn.innerHTML = `${SVG_CHECK} Copiado!`;
+        setTimeout(() => {
+          btn.classList.remove("snm-copied");
+          btn.innerHTML = `${SVG_COPY} Copiar URL`;
+        }, 2000);
+      });
+    };
+
+    SNM.copyImageUrl = function (key) {
+      const img = state.images.find((i) => i.key === key);
+      if (!img) return;
+      navigator.clipboard.writeText(img.url).then(() => {
+        toast("URL copiada!", "success");
+      });
+    };
+
+    /* ─── FOLDERS ─── */
+    SNM.showNewFolder = function () {
+      $("snmNewFolderRow").style.display = "flex";
+      setTimeout(() => $("snmNewFolderInput").focus(), 50);
+    };
+
+    SNM.hideNewFolder = function () {
+      $("snmNewFolderRow").style.display = "none";
+      $("snmNewFolderInput").value = "";
+    };
+
+    SNM.createFolder = async function () {
+      const name = $("snmNewFolderInput").value.trim();
+      if (!name) return;
+      const path = state.currentFolder ? `${state.currentFolder}/${name}` : name;
+      try {
+        const res = await fetch(`${API_BASE}/folders`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", ...authHeaders() },
+          body: JSON.stringify({ path })
+        });
+        if (res.ok) {
+          toast(`Pasta "${name}" criada!`, "success");
+          SNM.hideNewFolder();
+          await loadFolders();
+          render();
+        } else {
+          toast("Erro ao criar pasta.", "error");
+        }
+      } catch {
+        toast("Erro de conexão.", "error");
+      }
+    };
+
+    $("snmNewFolderInput").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") SNM.createFolder();
+      if (e.key === "Escape") SNM.hideNewFolder();
+    });
+
+    /* ─── MOVE (PARALLEL) ─── */
+    SNM.showMoveModal = function () {
+      if (!state.selected.size && !state.ctxTarget) return;
+      renderMoveFolderList();
+      $("snmMoveModal").classList.add("snm-show");
+    };
+
+    SNM.closeMoveModal = function () {
+      $("snmMoveModal").classList.remove("snm-show");
+      state.moveTarget = null;
+      document.querySelectorAll(".snm-folder-option").forEach((el) => el.classList.remove("snm-selected-opt"));
+    };
+
+    SNM.selectMoveTarget = function (el, path) {
+      state.moveTarget = path;
+      document.querySelectorAll(".snm-folder-option").forEach((o) => o.classList.remove("snm-selected-opt"));
+      el.classList.add("snm-selected-opt");
+    };
+
+    SNM.confirmMove = async function () {
+      if (state.moveTarget === null) {
+        toast("Selecione uma pasta de destino.", "info");
+        return;
+      }
+      const keys = state.ctxTarget ? [state.ctxTarget] : Array.from(state.selected);
+
+      const movePromises = keys.map(async (key) => {
+        try {
+          const res = await fetch(`${API_BASE}/images`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json", ...authHeaders() },
+            body: JSON.stringify({ key, targetFolder: state.moveTarget })
+          });
+          if (res.ok) {
+            state.images = state.images.filter((img) => img.key !== key);
+            return true;
+          }
+        } catch {}
+        return false;
+      });
+
+      const results = await Promise.all(movePromises);
+      const ok = results.filter(Boolean).length;
+      SNM.closeMoveModal();
+      state.ctxTarget = null;
+      state.selected.clear();
+      if (ok) toast(`${ok} imagem(s) movida(s).`, "success");
+      render();
+    };
+
+    /* ─── CONTEXT MENU ─── */
+    SNM.ctxImage = function (e, key) {
+      e.preventDefault();
+      state.ctxTarget = key;
+      showCtx(e.clientX, e.clientY);
+    };
+
+    SNM.ctxFolder = function (e, path) {
+      e.preventDefault();
+      showCtx(e.clientX, e.clientY);
+    };
+
+    function showCtx(x, y) {
+      const menu = $("snmCtxMenu");
+      menu.classList.add("snm-show");
+      const mx = Math.min(x, window.innerWidth - 200);
+      const my = Math.min(y, window.innerHeight - 160);
+      menu.style.left = `${mx}px`;
+      menu.style.top = `${my}px`;
+    }
+
+    document.addEventListener("click", () => {
+      $("snmCtxMenu").classList.remove("snm-show");
+    });
+
+    $("snmCtxCopy").addEventListener("click", () => {
+      if (state.ctxTarget) SNM.copyImageUrl(state.ctxTarget);
+      state.ctxTarget = null;
+    });
+
+    $("snmCtxPreview").addEventListener("click", () => {
+      if (state.ctxTarget) SNM.openLightbox(state.ctxTarget);
+      state.ctxTarget = null;
+    });
+
+    $("snmCtxMove").addEventListener("click", () => {
+      SNM.showMoveModal();
+    });
+
+    $("snmCtxDelete").addEventListener("click", () => {
+      if (state.ctxTarget) {
+        SNM.deleteSingle(state.ctxTarget);
+        state.ctxTarget = null;
+      }
+    });
+
+    /* ─── KEYBOARD & MODAL BACKDROP ─── */
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        SNM.closeLightbox();
+        SNM.closeMoveModal();
+        $("snmCtxMenu").classList.remove("snm-show");
+      }
+    });
+
+    $("snmLightbox").addEventListener("click", function (e) {
+      if (e.target === this) SNM.closeLightbox();
+    });
+
+    /* ─── INIT ─── */
+    checkAuth();
+  })();
+  </script>
+  </body>
+</html>
