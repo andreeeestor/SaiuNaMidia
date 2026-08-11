@@ -110,22 +110,29 @@ async def extract_media(req: ExtractMediaRequest, user=Depends(verify_token)):
             if url_val and url_val not in candidate_images:
                 candidate_images.append(url_val)
 
-    # Search for logos in header / nav / logo elements (EXCLUDING FAVICONS)
-    logo_selectors = [
-        "header img", ".header img", "#header img", "nav img", ".navbar img",
-        "a[class*='logo' i] img", "div[class*='logo' i] img", "div[id*='logo' i] img",
-        ".logo img", "#logo img", ".brand img", "#brand img", ".site-branding img",
-        "img[class*='logo' i]", "img[alt*='logo' i]", "img[src*='logo' i]",
-        "img[class*='brand' i]", "img[alt*='brand' i]"
+    # Search for favicons / site icons
+    favicon_selectors = [
+        "link[rel*='icon' i]", "link[rel='shortcut icon' i]", "link[rel='apple-touch-icon' i]",
+        "meta[property='og:image:src']", "meta[name='twitter:image']",
+        "header img", ".header img", "#header img", ".logo img", "#logo img"
     ]
-    for sel in logo_selectors:
+    for sel in favicon_selectors:
         for el in soup.select(sel):
-            src = el.get("src") or el.get("data-src") or el.get("href")
+            src = el.get("href") or el.get("src") or el.get("data-src")
             if src:
                 full_src = clean_url(src, final_url)
-                if full_src and not re.search(r'(favicon|apple-touch-icon|\.ico|16x16|32x32|48x48|touch-icon)', full_src, re.I):
-                    if full_src not in candidate_logos:
-                        candidate_logos.append(full_src)
+                if full_src and full_src not in candidate_logos:
+                    candidate_logos.append(full_src)
+
+    # Always include Google Favicon API as high-res 128px fallback
+    try:
+        domain = urlparse(final_url).netloc
+        if domain:
+            google_favicon = f"https://www.google.com/s2/favicons?domain={domain}&sz=128"
+            if google_favicon not in candidate_logos:
+                candidate_logos.insert(0, google_favicon)
+    except Exception:
+        pass
 
     # Search for article/main images
     for img in soup.select("article img, main img, .content img, .post img, img"):
@@ -152,10 +159,10 @@ async def extract_media(req: ExtractMediaRequest, user=Depends(verify_token)):
                 f"Título da notícia: {title}\n"
                 f"Primeiro parágrafo do artigo: {summary[:500]}\n\n"
                 f"Candidatas a IMAGEM PRINCIPAL:\n{json.dumps(candidate_images, indent=2)}\n\n"
-                f"Candidatas a LOGO DO CABEÇALHO:\n{json.dumps(candidate_logos, indent=2)}\n\n"
+                f"Candidatas a FAVICON / LOGO DO SITE:\n{json.dumps(candidate_logos, indent=2)}\n\n"
                 "Instruções estritas:\n"
                 "1. Selecione a melhor URL de imagem da matéria ('image').\n"
-                "2. Selecione a melhor URL da LOGO DO CABEÇALHO/HEADER do site ('logo'). JAMAIS selecione favicons ou ícones de aba.\n"
+                "2. Selecione a melhor URL do FAVICON / ÍCONE DO SITE ('logo').\n"
                 "3. Selecione o nome do veículo de imprensa ('portal_name').\n"
                 "4. Para o resumo ('summary'), mantenha o PRIMEIRO PARÁGRAFO completo e informativo do artigo.\n\n"
                 "Retorne JSON: {\"image\": \"...\", \"logo\": \"...\", \"portal_name\": \"...\", \"summary\": \"...\"}."

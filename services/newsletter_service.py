@@ -35,7 +35,7 @@ def render_email_newsletter(articles: List[NewsArticleItem], date_header: str = 
 
         img_tag = ""
         if art.image:
-            img_tag = f'<img src="{art.image}" alt="{art.title}" width="100%" height="200" style="display: block; width: 100%; height: 200px; border-radius: 8px; border: 0; object-fit: cover;">'
+            img_tag = f'<img src="{art.image}" alt="{art.title}" width="100%" style="display: block; width: 100%; height: auto; max-height: 260px; border-radius: 8px; border: 0; object-fit: cover;">'
 
         articles_html.append(f"""
                     <!-- Matéria {idx + 1} -->
@@ -170,7 +170,7 @@ def render_wcm_newsletter(articles: List[NewsArticleItem], date_header: str = No
     cards_html = []
     for art in articles:
         logo_html = f'<img src="{art.logo}" alt="{art.portal_name}" style="height: 24px; width: auto; vertical-align: middle; margin-left: 6px;" />' if art.logo else ''
-        img_html = f'<div style="flex: 0 0 240px;"><img src="{art.image}" alt="{art.title}" style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px;" /></div>' if art.image else ''
+        img_html = f'<div style="flex: 0 0 280px; max-width: 280px;"><img src="{art.image}" alt="{art.title}" style="width: 100%; height: auto; max-height: 200px; object-fit: cover; border-radius: 8px; display: block;" /></div>' if art.image else ''
 
         cards_html.append(f"""
   <!-- Card Matéria -->
