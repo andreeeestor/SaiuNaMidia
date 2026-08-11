@@ -246,13 +246,79 @@
       #snm-root .snm-user-info { flex: 1; min-width: 0; }
       #snm-root .snm-user-name { font-size: 0.8rem; font-weight: 600; color: var(--snm-text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
       #snm-root .snm-user-role { font-size: 0.65rem; color: #64748b; font-weight: 500; }
-      #snm-root .snm-logout-btn {
-        background: #f1f5f9; border: none; cursor: pointer; color: #64748b;
-        width: 28px; height: 28px; border-radius: 6px; transition: all 0.15s;
-        display: flex; align-items: center; justify-content: center;
-      }
       #snm-root .snm-logout-btn:hover { background: #fee2e2; color: #ef4444; }
       #snm-root .snm-logout-btn svg { width: 14px; height: 14px; }
+
+      /* ── AI EXTRACTOR TAB ── */
+      #snm-root .snm-badge-ai {
+        font-size: 0.62rem; font-weight: 700; background: linear-gradient(135deg, #0ea5e9, #6366f1);
+        color: #fff; border-radius: 6px; padding: 1px 5px; margin-left: auto;
+      }
+      #snm-root .snm-ai-container { max-width: 860px; margin: 0 auto; padding: 12px 0 40px; }
+      #snm-root .snm-ai-header { text-align: center; margin-bottom: 24px; }
+      #snm-root .snm-ai-badge-header {
+        display: inline-block; font-size: 0.72rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 1px;
+        background: #f0f9ff; color: #0ea5e9; padding: 4px 12px;
+        border-radius: 20px; border: 1px solid rgba(14, 165, 233, 0.2);
+        margin-bottom: 12px;
+      }
+      #snm-root .snm-ai-header h2 { font-size: 1.5rem; font-weight: 700; color: var(--snm-text-main); margin-bottom: 8px; }
+      #snm-root .snm-ai-header p { font-size: 0.88rem; color: var(--snm-text-sub); max-width: 600px; margin: 0 auto; }
+      #snm-root .snm-ai-card {
+        background: #fff; border: 1px solid var(--snm-border); border-radius: 16px;
+        padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+      }
+      #snm-root .snm-ai-input-group { display: flex; gap: 12px; }
+      #snm-root .snm-ai-input-wrap { flex: 1; position: relative; display: flex; align-items: center; }
+      #snm-root .snm-ai-link-icon { position: absolute; left: 14px; width: 18px; height: 18px; color: #94a3b8; }
+      #snm-root .snm-ai-input-wrap input {
+        width: 100%; padding: 12px 14px 12px 42px; border-radius: 10px;
+        border: 1.5px solid var(--snm-border); outline: none; font-size: 0.88rem;
+        transition: border-color 0.15s, box-shadow 0.15s; background: #f8fafc;
+        color: var(--snm-text-main);
+      }
+      #snm-root .snm-ai-input-wrap input:focus { border-color: var(--snm-primary); background: #fff; box-shadow: 0 0 0 3px rgba(14,165,233,0.12); }
+      #snm-root .snm-ai-btn {
+        padding: 0 20px; border-radius: 10px; border: none; cursor: pointer;
+        background: linear-gradient(135deg, var(--snm-primary), var(--snm-primary-hover));
+        color: #fff; font-weight: 600; font-size: 0.88rem;
+        box-shadow: 0 4px 14px rgba(14,165,233,0.3); transition: all 0.15s;
+        display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0;
+      }
+      #snm-root .snm-ai-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(14,165,233,0.4); }
+      #snm-root .snm-ai-btn.snm-loading .snm-spinner { display: block; }
+      #snm-root .snm-ai-btn.snm-loading .snm-btn-text { display: none; }
+      #snm-root .snm-ai-results { margin-top: 28px; border-top: 1px solid #f1f5f9; padding-top: 20px; }
+      #snm-root .snm-ai-result-title { font-size: 0.95rem; font-weight: 600; color: var(--snm-text-main); margin-bottom: 18px; line-height: 1.4; }
+      #snm-root .snm-ai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+      @media (max-width: 640px) { #snm-root .snm-ai-grid { grid-template-columns: 1fr; } }
+      #snm-root .snm-ai-media-card {
+        border: 1px solid var(--snm-border); border-radius: 12px; overflow: hidden; background: #f8fafc;
+      }
+      #snm-root .snm-ai-media-header { padding: 10px 14px; background: #fff; border-bottom: 1px solid var(--snm-border); }
+      #snm-root .snm-ai-media-tag {
+        font-size: 0.72rem; font-weight: 700; border-radius: 6px; padding: 3px 8px; display: inline-block;
+      }
+      #snm-root .snm-ai-media-tag.tag-image { background: #e0f2fe; color: #0284c7; }
+      #snm-root .snm-ai-media-tag.tag-logo { background: #fef3c7; color: #d97706; }
+      #snm-root .snm-ai-preview { height: 180px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+      #snm-root .snm-ai-preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
+      #snm-root .snm-ai-preview.logo-preview { background: #ffffff; padding: 14px; }
+      #snm-root .snm-ai-media-body { padding: 12px 14px; background: #fff; border-top: 1px solid var(--snm-border); }
+      #snm-root .snm-ai-url-label { font-size: 0.7rem; font-weight: 600; color: var(--snm-text-sub); margin-bottom: 4px; }
+      #snm-root .snm-ai-url-input {
+        width: 100%; font-size: 0.75rem; padding: 6px 8px; background: #f1f5f9; border: 1px solid var(--snm-border);
+        border-radius: 6px; color: var(--snm-text-main); font-family: monospace; outline: none; margin-bottom: 10px;
+      }
+      #snm-root .snm-ai-actions { display: flex; gap: 8px; }
+      #snm-root .snm-ai-action-btn {
+        flex: 1; padding: 7px 10px; border-radius: 6px; border: 1px solid var(--snm-border);
+        background: #fff; cursor: pointer; font-size: 0.78rem; font-weight: 600; color: var(--snm-text-main);
+        display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.15s;
+      }
+      #snm-root .snm-ai-action-btn:hover { background: #f1f5f9; border-color: #cbd5e1; }
+      #snm-root .snm-ai-action-btn svg { width: 14px; height: 14px; }
 
       /* ── MAIN AREA ── */
       #snm-root .snm-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
@@ -627,10 +693,15 @@
           <div class="snm-sidebar-label-wrap">
             <span class="snm-sidebar-label">Navegação</span>
           </div>
-          <div class="snm-nav-item snm-active" id="snmNavAll" onclick="SNM.navigateTo('')">
+          <div class="snm-nav-item snm-active" id="snmNavAll" onclick="SNM.switchTab('explorer')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             <span class="snm-nav-text">Início</span>
             <span class="snm-nav-count" id="snmTotalCount">0</span>
+          </div>
+          <div class="snm-nav-item" id="snmNavAi" onclick="SNM.switchTab('ai')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            <span class="snm-nav-text">Extrator IA</span>
+            <span class="snm-badge-ai">IA</span>
           </div>
         </div>
 
@@ -692,51 +763,125 @@
         <!-- CONTENT -->
         <div class="snm-content" id="snmContent">
 
-          <!-- UPLOAD ZONE -->
-          <div class="snm-upload-zone" id="snmDropZone">
-            <input type="file" id="snmFileInput" multiple accept="image/*" style="display:none" />
-            <div class="snm-upload-default">
-              <div class="snm-upload-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:44px;height:44px"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <!-- EXPLORER TAB -->
+          <div id="snmExplorerTab">
+            <!-- UPLOAD ZONE -->
+            <div class="snm-upload-zone" id="snmDropZone">
+              <input type="file" id="snmFileInput" multiple accept="image/*" style="display:none" />
+              <div class="snm-upload-default">
+                <div class="snm-upload-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:44px;height:44px"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                </div>
+                <p>Arraste imagens aqui ou <strong>clique para selecionar</strong></p>
+                <small>JPG, PNG, WebP, GIF, SVG · máx 10MB por arquivo</small>
               </div>
-              <p>Arraste imagens aqui ou <strong>clique para selecionar</strong></p>
-              <small>JPG, PNG, WebP, GIF, SVG · máx 10MB por arquivo</small>
+              <div class="snm-upload-progress">
+                <div class="snm-pulse"></div>
+                <span id="snmUploadStatus" style="font-size:0.85rem;color:#64748b">Enviando...</span>
+              </div>
             </div>
-            <div class="snm-upload-progress">
-              <div class="snm-pulse"></div>
-              <span id="snmUploadStatus" style="font-size:0.85rem;color:#64748b">Enviando...</span>
+
+            <!-- TOOLBAR -->
+            <div class="snm-toolbar">
+              <div class="snm-search">
+                <span class="snm-search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+                <input type="text" id="snmSearch" placeholder="Buscar imagens..." oninput="SNM.filterImages(this.value)" />
+              </div>
+              <div class="snm-selection-bar" id="snmSelectionBar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="20 6 9 17 4 12"/></svg>
+                <span id="snmSelCount">0</span> selecionada(s)
+                <button class="snm-sel-btn snm-sel-btn-move" onclick="SNM.showMoveModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>Mover</button>
+                <button class="snm-sel-btn snm-sel-btn-danger" onclick="SNM.deleteSelected()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>Deletar</button>
+                <button class="snm-sel-btn snm-sel-btn-clear" onclick="SNM.clearSelection()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;vertical-align:-2px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              </div>
+            </div>
+
+            <!-- NEW FOLDER INPUT -->
+            <div class="snm-new-folder-row" id="snmNewFolderRow" style="display:none">
+              <div class="snm-new-folder-input-wrap snm-show">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;color:#f59e0b;flex-shrink:0"><path d="M19.5 21a3 3 0 003-3v-4.5a3 3 0 00-3-3h-15a3 3 0 00-3 3V18a3 3 0 003 3h15zM1.5 10.146V6a3 3 0 013-3h5.379a2.25 2.25 0 011.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 013 3v1.146A4.483 4.483 0 0019.5 9h-15a4.483 4.483 0 00-3 1.146z"/></svg>
+                <input type="text" class="snm-new-folder-input" id="snmNewFolderInput" placeholder="Nome da nova pasta..." />
+                <button class="snm-topbar-btn snm-btn-primary-sm" onclick="SNM.createFolder()" style="font-size:0.78rem;padding:6px 12px">Criar</button>
+                <button class="snm-topbar-btn snm-btn-ghost" onclick="SNM.hideNewFolder()" style="font-size:0.78rem;padding:6px 12px">Cancelar</button>
+              </div>
+            </div>
+
+            <!-- ITEMS AREA -->
+            <div id="snmItemsArea">
+              <div class="snm-loading-state"><div class="snm-pulse"></div> Carregando...</div>
             </div>
           </div>
 
-          <!-- TOOLBAR -->
-          <div class="snm-toolbar">
-            <div class="snm-search">
-              <span class="snm-search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
-              <input type="text" id="snmSearch" placeholder="Buscar imagens..." oninput="SNM.filterImages(this.value)" />
+          <!-- AI EXTRACTOR TAB -->
+          <div id="snmAiTab" class="snm-ai-container" style="display:none">
+            <div class="snm-ai-header">
+              <div class="snm-ai-badge-header">Inteligência Artificial</div>
+              <h2>Extrator Inteligente de Mídia</h2>
+              <p>Insira a URL de uma matéria ou portal de notícias para a IA extrair a <strong>imagem da notícia</strong> e a <strong>logo do veículo</strong>.</p>
             </div>
-            <div class="snm-selection-bar" id="snmSelectionBar">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="20 6 9 17 4 12"/></svg>
-              <span id="snmSelCount">0</span> selecionada(s)
-              <button class="snm-sel-btn snm-sel-btn-move" onclick="SNM.showMoveModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>Mover</button>
-              <button class="snm-sel-btn snm-sel-btn-danger" onclick="SNM.deleteSelected()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>Deletar</button>
-              <button class="snm-sel-btn snm-sel-btn-clear" onclick="SNM.clearSelection()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;vertical-align:-2px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+
+            <div class="snm-ai-card">
+              <form id="snmAiForm">
+                <div class="snm-ai-input-group">
+                  <div class="snm-ai-input-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="snm-ai-link-icon"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+                    <input type="url" id="snmAiUrl" placeholder="Ex: https://rede98.com.br/98/copasa-conquista-premio-nacional..." required />
+                  </div>
+                  <button type="submit" class="snm-ai-btn" id="snmAiBtn">
+                    <span class="snm-btn-text">Extrair Mídias</span>
+                    <span class="snm-spinner"></span>
+                  </button>
+                </div>
+              </form>
+
+              <div id="snmAiResults" class="snm-ai-results" style="display:none">
+                <div class="snm-ai-result-title" id="snmAiTitle"></div>
+                
+                <div class="snm-ai-grid">
+                  <!-- Imagem Principal Card -->
+                  <div class="snm-ai-media-card">
+                    <div class="snm-ai-media-header">
+                      <span class="snm-ai-media-tag tag-image">Imagem da Matéria</span>
+                    </div>
+                    <div class="snm-ai-preview" id="snmAiImgPreview">
+                      <img id="snmAiImg" src="" alt="Imagem Principal" />
+                    </div>
+                    <div class="snm-ai-media-body">
+                      <div class="snm-ai-url-label">URL da Imagem:</div>
+                      <input type="text" readonly id="snmAiImgUrl" class="snm-ai-url-input" onclick="this.select()" />
+                      <div class="snm-ai-actions">
+                        <button class="snm-ai-action-btn" onclick="SNM.copyAiUrl('snmAiImgUrl')">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                          Copiar Link
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Logo do Veículo Card -->
+                  <div class="snm-ai-media-card">
+                    <div class="snm-ai-media-header">
+                      <span class="snm-ai-media-tag tag-logo">Logo do Veículo</span>
+                    </div>
+                    <div class="snm-ai-preview logo-preview" id="snmAiLogoPreview">
+                      <img id="snmAiLogo" src="" alt="Logo do Portal" />
+                    </div>
+                    <div class="snm-ai-media-body">
+                      <div class="snm-ai-url-label">URL da Logo:</div>
+                      <input type="text" readonly id="snmAiLogoUrl" class="snm-ai-url-input" onclick="this.select()" />
+                      <div class="snm-ai-actions">
+                        <button class="snm-ai-action-btn" onclick="SNM.copyAiUrl('snmAiLogoUrl')">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                          Copiar Link
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- NEW FOLDER INPUT -->
-          <div class="snm-new-folder-row" id="snmNewFolderRow" style="display:none">
-            <div class="snm-new-folder-input-wrap snm-show">
-              <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;color:#f59e0b;flex-shrink:0"><path d="M19.5 21a3 3 0 003-3v-4.5a3 3 0 00-3-3h-15a3 3 0 00-3 3V18a3 3 0 003 3h15zM1.5 10.146V6a3 3 0 013-3h5.379a2.25 2.25 0 011.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 013 3v1.146A4.483 4.483 0 0019.5 9h-15a4.483 4.483 0 00-3 1.146z"/></svg>
-              <input type="text" class="snm-new-folder-input" id="snmNewFolderInput" placeholder="Nome da nova pasta..." />
-              <button class="snm-topbar-btn snm-btn-primary-sm" onclick="SNM.createFolder()" style="font-size:0.78rem;padding:6px 12px">Criar</button>
-              <button class="snm-topbar-btn snm-btn-ghost" onclick="SNM.hideNewFolder()" style="font-size:0.78rem;padding:6px 12px">Cancelar</button>
-            </div>
-          </div>
-
-          <!-- ITEMS AREA -->
-          <div id="snmItemsArea">
-            <div class="snm-loading-state"><div class="snm-pulse"></div> Carregando...</div>
-          </div>
         </div>
       </main>
     </div>
@@ -1501,6 +1646,91 @@
 
     $("snmLightbox").addEventListener("click", function (e) {
       if (e.target === this) SNM.closeLightbox();
+    });
+
+    /* ─── TAB SWITCHING & AI EXTRACTOR ─── */
+    SNM.switchTab = function (tab) {
+      const explorerTab = $("snmExplorerTab");
+      const aiTab = $("snmAiTab");
+      const navAll = $("snmNavAll");
+      const navAi = $("snmNavAi");
+
+      if (tab === "ai") {
+        explorerTab.style.display = "none";
+        aiTab.style.display = "block";
+        navAll.classList.remove("snm-active");
+        navAi.classList.add("snm-active");
+      } else {
+        explorerTab.style.display = "block";
+        aiTab.style.display = "none";
+        navAll.classList.add("snm-active");
+        navAi.classList.remove("snm-active");
+      }
+    };
+
+    SNM.copyAiUrl = function (inputId) {
+      const input = $(inputId);
+      if (!input || !input.value) return;
+      navigator.clipboard.writeText(input.value).then(() => {
+        toast("URL copiada com sucesso!", "success");
+      });
+    };
+
+    $("snmAiForm")?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const urlInput = $("snmAiUrl");
+      const btn = $("snmAiBtn");
+      const resultsArea = $("snmAiResults");
+      const urlVal = urlInput.value.trim();
+
+      if (!urlVal) return;
+
+      btn.classList.add("snm-loading");
+      btn.disabled = true;
+      resultsArea.style.display = "none";
+
+      try {
+        const res = await fetch(`${API_BASE}/ai/extract-media`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...authHeaders()
+          },
+          body: JSON.stringify({ url: urlVal })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          $("snmAiTitle").textContent = data.title || "Mídias extraídas da página";
+          
+          if (data.image) {
+            $("snmAiImg").src = data.image;
+            $("snmAiImgUrl").value = data.image;
+          } else {
+            $("snmAiImg").src = "";
+            $("snmAiImgUrl").value = "Nenhuma imagem identificada";
+          }
+
+          if (data.logo) {
+            $("snmAiLogo").src = data.logo;
+            $("snmAiLogoUrl").value = data.logo;
+          } else {
+            $("snmAiLogo").src = "";
+            $("snmAiLogoUrl").value = "Nenhuma logo identificada";
+          }
+
+          resultsArea.style.display = "block";
+          toast("Mídias extraídas com sucesso!", "success");
+        } else {
+          const err = await res.json();
+          toast(err.detail || "Erro ao extrair mídias da URL.", "error");
+        }
+      } catch {
+        toast("Erro de conexão com o serviço de IA.", "error");
+      } finally {
+        btn.classList.remove("snm-loading");
+        btn.disabled = false;
+      }
     });
 
     /* ─── INIT ─── */

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
-from routers import auth, folders, media
+from routers import auth, folders, media, ai
 
 app = FastAPI(title="SaiuNaMídia API", version="1.0.0")
 
@@ -17,6 +17,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(folders.router)
 app.include_router(media.router)
+app.include_router(ai.router)
 
 
 @app.get("/")
