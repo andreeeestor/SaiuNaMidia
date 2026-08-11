@@ -1,6 +1,6 @@
 import json
 import re
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 from typing import Optional, List, Dict, Any
 from fastapi import APIRouter, Depends, HTTPException, status
 import httpx
@@ -8,7 +8,13 @@ from bs4 import BeautifulSoup
 
 from core.config import settings
 from core.security import verify_token
-from schemas.ai import ExtractMediaRequest, ExtractMediaResponse
+from schemas.ai import (
+    ExtractMediaRequest,
+    ExtractMediaResponse,
+    GenerateNewsletterRequest,
+    GenerateNewsletterResponse
+)
+from services.newsletter_service import render_email_newsletter, render_wcm_newsletter
 
 router = APIRouter(prefix="/ai", tags=["AI"])
 
@@ -27,6 +33,17 @@ def clean_url(url: str, base_url: str) -> str:
         return ""
     full_url = urljoin(base_url, url.strip())
     return full_url
+
+
+def extract_domain_name(url: str) -> str:
+    try:
+        domain = urlparse(url).netloc.replace("www.", "")
+        parts = domain.split(".")
+        if len(parts) >= 2:
+            return parts[0].capitalize()
+        return domain.capitalize()
+    except Exception:
+        return "Portal de Notícias"
 
 
 @router.post("/extract-media", response_model=ExtractMediaResponse)
@@ -54,9 +71,25 @@ async def extract_media(req: ExtractMediaRequest, user=Depends(verify_token)):
     title = ""
     og_title = soup.find("meta", property="og:title")
     if og_title and og_title.get("content"):
-        title = og_title["content"]
+        title = og_title["content"].strip()
     elif soup.title and soup.title.string:
         title = soup.title.string.strip()
+
+    # Extract description/summary
+    summary = ""
+    og_desc = soup.find("meta", property="og:description") or soup.find("meta", attrs={"name": "description"})
+    if og_desc and og_desc.get("content"):
+        summary = og_desc["content"].strip()
+    else:
+        first_p = soup.select_one("article p, main p, p")
+        if first_p and first_p.text:
+            summary = first_p.text.strip()[:300]
+
+    # Extract site/portal name
+    portal_name = extract_domain_name(final_url)
+    og_site = soup.find("meta", property="og:site_name")
+    if og_site and og_site.get("content"):
+        portal_name = og_site["content"].strip()
 
     # Extract candidates
     candidate_images: List[str] = []
@@ -90,30 +123,31 @@ async def extract_media(req: ExtractMediaRequest, user=Depends(verify_token)):
         src = img.get("src") or img.get("data-src")
         if src:
             full_src = clean_url(src, final_url)
-            # Filter out tracking pixels / tiny icons
             if full_src and not re.search(r'(pixel|tracking|avatar|icon|1x1|banner-ad)', full_src, re.I):
                 if full_src not in candidate_images:
                     candidate_images.append(full_src)
             if len(candidate_images) >= 15:
                 break
 
-    # Truncate candidates to avoid excessive prompt size
     candidate_images = candidate_images[:10]
     candidate_logos = candidate_logos[:8]
 
     selected_image = candidate_images[0] if candidate_images else None
     selected_logo = candidate_logos[0] if candidate_logos else None
 
-    # Call Groq API if API key is provided
+    # Call Groq API if API key is provided (using lightweight llama-3.1-8b-instant)
     if settings.GROQ_API_KEY.strip():
         try:
             prompt = (
                 f"URL da matéria: {final_url}\n"
-                f"Título da notícia: {title}\n\n"
-                f"Lista de candidatas a IMAGEM PRINCIPAL DA MATÉRIA:\n{json.dumps(candidate_images, indent=2)}\n\n"
-                f"Lista de candidatas a LOGO DO PORTAL/VEÍCULO:\n{json.dumps(candidate_logos, indent=2)}\n\n"
-                "Selecione a melhor URL para a imagem da matéria ('image') e a melhor URL para a logo do site ('logo'). "
-                "Retorne estritamente um JSON com a estrutura: {\"image\": \"...\", \"logo\": \"...\"}."
+                f"Título da notícia: {title}\n"
+                f"Resumo bruto: {summary[:250]}\n\n"
+                f"Candidatas a IMAGEM PRINCIPAL:\n{json.dumps(candidate_images, indent=2)}\n\n"
+                f"Candidatas a LOGO:\n{json.dumps(candidate_logos, indent=2)}\n\n"
+                "Selecione a melhor URL de imagem ('image'), a melhor URL de logo ('logo'), "
+                "o nome curto e limpo do veículo de imprensa ('portal_name'), "
+                "e um resumo conciso da notícia em 2 frases ('summary'). "
+                "Retorne JSON: {\"image\": \"...\", \"logo\": \"...\", \"portal_name\": \"...\", \"summary\": \"...\"}."
             )
 
             async with httpx.AsyncClient(timeout=10.0) as ai_client:
@@ -129,9 +163,9 @@ async def extract_media(req: ExtractMediaRequest, user=Depends(verify_token)):
                             {
                                 "role": "system",
                                 "content": (
-                                    "Você é um analisador de mídias de jornais e portais de notícias. "
-                                    "Seu trabalho é escolher entre os links fornecidos qual é a imagem principal da notícia e qual é a logo da empresa/veículo. "
-                                    "Responda APENAS em JSON válido."
+                                    "Você é um assistente de clipping e mídias de imprensa da COPASA. "
+                                    "Seu objetivo é selecionar a imagem principal, a logo do veículo e gerar um resumo jornalístico claro em português. "
+                                    "Responda APENAS em JSON estrito."
                                 )
                             },
                             {"role": "user", "content": prompt}
@@ -148,12 +182,35 @@ async def extract_media(req: ExtractMediaRequest, user=Depends(verify_token)):
                         selected_image = clean_url(parsed["image"], final_url)
                     if parsed.get("logo"):
                         selected_logo = clean_url(parsed["logo"], final_url)
+                    if parsed.get("summary"):
+                        summary = parsed["summary"].strip()
+                    if parsed.get("portal_name"):
+                        portal_name = parsed["portal_name"].strip()
         except Exception:
-            pass  # Fall back to heuristic selections if Groq request fails
+            pass
 
     return ExtractMediaResponse(
         url=final_url,
         title=title,
+        summary=summary,
         image=selected_image,
-        logo=selected_logo
+        logo=selected_logo,
+        portal_name=portal_name
+    )
+
+
+@router.post("/generate-newsletter", response_model=GenerateNewsletterResponse)
+async def generate_newsletter(req: GenerateNewsletterRequest, user=Depends(verify_token)):
+    if not req.articles:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Nenhuma matéria fornecida para a newsletter."
+        )
+
+    email_html = render_email_newsletter(req.articles, date_header=req.date_header)
+    wcm_html = render_wcm_newsletter(req.articles, date_header=req.date_header)
+
+    return GenerateNewsletterResponse(
+        email_html=email_html,
+        wcm_html=wcm_html
     )

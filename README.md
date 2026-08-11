@@ -2,7 +2,7 @@
 
 O **SaiuNaMídia** é uma aplicação web desenvolvida exclusivamente para apoiar e otimizar o fluxo de trabalho do setor de publicidade da **COPASA**.
 
-A plataforma funciona como um explorador e repositório de arquivos focado em mídia (imagens, banners e peças publicitárias), fornecendo uma interface rica, leve e intuitiva (estilo **Google Drive / Finder**), permitindo o armazenamento na nuvem, organização por pastas, geração/compartilhamento imediato de URLs e **extração inteligente de mídias via IA**.
+A plataforma funciona como um explorador e repositório de arquivos focado em mídia (imagens, banners e peças publicitárias), fornecendo uma interface rica, leve e intuitiva (estilo **Google Drive / Finder**), permitindo o armazenamento na nuvem, organização por pastas, geração/compartilhamento imediato de URLs, **extração inteligente de mídias via IA** e **geração de newsletters diárias (#saiunamídia)**.
 
 ---
 
@@ -19,7 +19,12 @@ Originalmente estruturado em **Next.js**, o projeto foi reformulado para **HTML5
 ## 🚀 Principais Funcionalidades
 
 - **Dashboard Estilo Explorer (Clone Drive/Finder):** Modos de visualização em Grid (Grade) e List (Lista).
-- **Aba "Extrator IA":** Extração automática da **imagem principal da matéria** e da **logo do portal de notícias** a partir de uma URL informada.
+- **Aba "Extrator IA & Newsletter":** Extração automática da **imagem principal da matéria**, **logo do portal de notícias**, resumo e portal a partir de uma URL informada.
+- **Gerador de Newsletter Diária (#saiunamídia):** Consolidação das notícias do dia em um único HTML padronizado com a identidade COPASA (`template/newsletter_copasa_2026_07_13.html`).
+- **Pré-visualização ao Vivo:** Exibição interativa e em tempo real do boletim dentro da plataforma.
+- **Dois Modos de Exportação:**
+  - 🌐 **Exportar para HTML (WCM HCL):** Gera o bloco de código HTML limpo pronto para colar como conteúdo/portlet no Portal WCM HCL da COPASA.
+  - 📧 **Exportar para E-mail:** Gera o código HTML completo responsivo, baseado em tabelas e estilos inline, otimizado para clientes de e-mail (Outlook, Gmail, etc.).
 - **Hospedagem em Nuvem via Cloudinary:** Upload direto para o Cloudinary com geração automática de URLs otimizadas para cópia e compartilhamento imediato.
 - **Navegação por Pastas:** Estrutura em árvore ilimitada com suporte a navegação em migalhas de pão (*Breadcrumb*).
 - **Visualização Rápida (Lightbox):** Pré-visualização com um único clique e funcionalidade de cópia de link direto em 1 clique.
@@ -36,22 +41,24 @@ Originalmente estruturado em **Next.js**, o projeto foi reformulado para **HTML5
 - **JavaScript ES6+:** Manipulação assíncrona com `fetch` e `Promise.all`, com deleção e movimentação em lote paralelas.
 
 ### Backend & Serviços
-- **Python (>= 3.12):** FastAPI / Uvicorn para gestão da API de dados, rotas de upload e IA.
+- **Python (>= 3.12):** FastAPI / Uvicorn para gestão da API de dados, rotas de upload, serviços de newsletter e IA.
 - **Gerenciador de Pacotes:** `uv` (Fast Python package installer).
 - **Cloudinary:** Serviço em nuvem para hospedagem das imagens, armazenamento seguro e geração de URLs de entrega de alta disponibilidade.
-- **Groq API & Llama 3.1 8B Instant:** Processamento leve e ultra-rápido para extração de mídias e logos em matérias jornalísticas.
+- **Groq API & Llama 3.1 8B Instant:** O modelo mais leve e ultra-rápido do Groq para extração de mídias, logos e resumos sem custos excessivos.
 
 ---
 
-## 🤖 Extrator IA (Groq & Llama 3.1 8B)
+## 🤖 Extrator IA & Gerador de Newsletter (Groq & Llama 3.1 8B)
 
-A aplicação conta com uma aba dedicada de **Extrator IA**:
+A aplicação conta com um módulo de **Inteligência Artificial & Clipping**:
 
-- **Modelo utilizado:** `llama-3.1-8b-instant` (modelo leve, econômico e de altíssima velocidade hospedado no Groq).
-- **Funcionamento:**
-  1. O usuário cola a URL da matéria de jornal/portal.
-  2. O backend faz o download e parse das tags HTML e OpenGraph (`og:image`, `logo`, etc.).
-  3. O modelo da IA seleciona e retorna a URL exata da **Imagem da Notícia** e a URL da **Logo do Veículo**.
+- **Modelo utilizado:** `llama-3.1-8b-instant` (modelo de máxima eficiência e baixo consumo hospedado no Groq).
+- **Processamento Otimizado:** O HTML da newsletter é montado deterministicamente no backend/frontend utilizando os modelos oficiais da COPASA, usando a IA estritamente para extração e resumos curtos (consumindo mínimo de tokens por matéria).
+- **Fluxo de Trabalho:**
+  1. O usuário insere a URL da notícia/matéria.
+  2. A IA extrai a **Imagem da Matéria**, a **Logo do Veículo**, o **Nome do Jornal** e um **Resumo Conciso**.
+  3. O usuário clica em **"Adicionar à Newsletter do Dia"**.
+  4. O sistema gera a pré-visualização ao vivo e permite exportar em **1-clique** tanto para o **Portal WCM HCL** quanto para **E-mail**.
 
 ---
 
@@ -75,7 +82,7 @@ CLOUDINARY_CLOUD_NAME=seu_cloud_name
 CLOUDINARY_API_KEY=sua_api_key
 CLOUDINARY_API_SECRET=seu_api_secret
 
-# Groq AI (Opcional - usa modelo leve llama-3.1-8b-instant)
+# Groq AI (Modelo leve llama-3.1-8b-instant)
 GROQ_API_KEY=sua_groq_api_key
 ```
 

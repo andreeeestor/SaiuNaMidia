@@ -319,6 +319,50 @@
       }
       #snm-root .snm-ai-action-btn:hover { background: #f1f5f9; border-color: #cbd5e1; }
       #snm-root .snm-ai-action-btn svg { width: 14px; height: 14px; }
+      #snm-root .snm-ai-add-news-btn {
+        margin-top: 14px; width: 100%; padding: 10px; border-radius: 8px; border: none;
+        background: linear-gradient(135deg, #10b981, #059669); color: #fff;
+        font-weight: 600; font-size: 0.84rem; cursor: pointer; display: flex; align-items: center;
+        justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25); transition: all 0.15s;
+      }
+      #snm-root .snm-ai-add-news-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35); }
+
+      /* ── NEWSLETTER GENERATOR ── */
+      #snm-root .snm-news-section { margin-top: 28px; border-top: 2px dashed var(--snm-border); padding-top: 24px; }
+      #snm-root .snm-news-header-wrap { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+      #snm-root .snm-news-title { font-size: 1.1rem; font-weight: 700; color: var(--snm-text-main); }
+      #snm-root .snm-news-actions-bar { display: flex; gap: 10px; flex-wrap: wrap; }
+      #snm-root .snm-btn-export-email {
+        background: linear-gradient(135deg, #15315E, #1e40af); color: #fff;
+        border: none; border-radius: 8px; padding: 9px 16px; font-weight: 600;
+        font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; gap: 6px;
+        box-shadow: 0 2px 8px rgba(21, 49, 94, 0.25); transition: all 0.15s;
+      }
+      #snm-root .snm-btn-export-email:hover { background: #0f2447; transform: translateY(-1px); }
+      #snm-root .snm-btn-export-html {
+        background: #0ea5e9; color: #fff; border: none; border-radius: 8px;
+        padding: 9px 16px; font-weight: 600; font-size: 0.82rem; cursor: pointer;
+        display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(14, 165, 233, 0.25); transition: all 0.15s;
+      }
+      #snm-root .snm-btn-export-html:hover { background: #0284c7; transform: translateY(-1px); }
+      #snm-root .snm-news-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+      #snm-root .snm-news-item-card {
+        background: #f8fafc; border: 1px solid var(--snm-border); border-radius: 10px;
+        padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      }
+      #snm-root .snm-news-item-info { flex: 1; min-width: 0; }
+      #snm-root .snm-news-item-title { font-size: 0.85rem; font-weight: 600; color: var(--snm-text-main); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      #snm-root .snm-news-item-sub { font-size: 0.72rem; color: var(--snm-text-sub); }
+      #snm-root .snm-news-item-remove {
+        background: #fee2e2; color: #ef4444; border: none; border-radius: 6px;
+        width: 28px; height: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      }
+      #snm-root .snm-news-item-remove:hover { background: #fca5a5; }
+      #snm-root .snm-iframe-preview {
+        width: 100%; height: 560px; border: 1.5px solid var(--snm-border);
+        border-radius: 12px; background: #fff; margin-top: 14px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+      }
 
       /* ── MAIN AREA ── */
       #snm-root .snm-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
@@ -878,7 +922,39 @@
                     </div>
                   </div>
                 </div>
+
+                <button class="snm-ai-add-news-btn" onclick="SNM.addExtractedToNewsletter()">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  Adicionar Matéria à Newsletter do Dia
+                </button>
               </div>
+
+              <!-- NEWSLETTER SECTION -->
+              <div class="snm-news-section">
+                <div class="snm-news-header-wrap">
+                  <div class="snm-news-title">📰 Newsletter do Dia (#saiunamídia)</div>
+                  <div class="snm-news-actions-bar">
+                    <button class="snm-btn-export-html" onclick="SNM.exportNewsletter('wcm')" title="Exportar bloco HTML para Portal WCM HCL">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                      Exportar para HTML (WCM HCL)
+                    </button>
+                    <button class="snm-btn-export-email" onclick="SNM.exportNewsletter('email')" title="Exportar modelo HTML para E-mail">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                      Exportar para E-mail
+                    </button>
+                  </div>
+                </div>
+
+                <div id="snmNewsList" class="snm-news-list">
+                  <!-- Listed newsletter articles added for today -->
+                </div>
+
+                <div style="font-size: 0.84rem; font-weight: 700; color: var(--snm-text-main); margin-bottom: 8px;">
+                  👁️ Pré-visualização ao Vivo:
+                </div>
+                <iframe id="snmNewsPreviewIframe" class="snm-iframe-preview"></iframe>
+              </div>
+
             </div>
           </div>
 
@@ -970,7 +1046,11 @@
       selected: new Set(),
       ctxTarget: null,
       moveTarget: null,
-      searchQuery: ""
+      searchQuery: "",
+      lastExtracted: null,
+      newsletterArticles: [],
+      generatedEmailHtml: "",
+      generatedWcmHtml: ""
     };
 
     /* ─── SVG ICONS ─── */
@@ -1701,6 +1781,7 @@
 
         if (res.ok) {
           const data = await res.json();
+          state.lastExtracted = data;
           $("snmAiTitle").textContent = data.title || "Mídias extraídas da página";
           
           if (data.image) {
@@ -1733,8 +1814,94 @@
       }
     });
 
+    /* ─── NEWSLETTER FUNCTIONS ─── */
+    SNM.addExtractedToNewsletter = function () {
+      if (!state.lastExtracted || !state.lastExtracted.title) {
+        toast("Nenhuma matéria extraída para adicionar.", "error");
+        return;
+      }
+      state.newsletterArticles.push({
+        title: state.lastExtracted.title,
+        summary: state.lastExtracted.summary || "Sem resumo.",
+        url: state.lastExtracted.url,
+        image: state.lastExtracted.image || "",
+        logo: state.lastExtracted.logo || "",
+        portal_name: state.lastExtracted.portal_name || "Portal de Notícias"
+      });
+      renderNewsletterList();
+      updateNewsletterPreview();
+      toast("Matéria adicionada à newsletter!", "success");
+    };
+
+    SNM.removeNewsArticle = function (idx) {
+      state.newsletterArticles.splice(idx, 1);
+      renderNewsletterList();
+      updateNewsletterPreview();
+    };
+
+    function renderNewsletterList() {
+      const container = $("snmNewsList");
+      if (!state.newsletterArticles.length) {
+        container.innerHTML = '<div style="font-size:0.8rem;color:#94a3b8;font-style:italic">Nenhuma matéria adicionada à newsletter hoje. Extraia uma notícia e clique em "Adicionar à Newsletter".</div>';
+        return;
+      }
+
+      container.innerHTML = state.newsletterArticles.map((art, idx) => `
+        <div class="snm-news-item-card">
+          <div class="snm-news-item-info">
+            <div class="snm-news-item-title">${esc(art.title)}</div>
+            <div class="snm-news-item-sub">Veículo: <strong>${esc(art.portal_name)}</strong></div>
+          </div>
+          <button class="snm-news-item-remove" onclick="SNM.removeNewsArticle(${idx})" title="Remover matéria">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    async function updateNewsletterPreview() {
+      const iframe = $("snmNewsPreviewIframe");
+      if (!state.newsletterArticles.length) {
+        iframe.srcdoc = '<body style="font-family:Arial,sans-serif;color:#94a3b8;display:flex;align-items:center;justify-content:center;height:100vh;margin:0"><div>Nenhuma matéria adicionada para pré-visualização.</div></body>';
+        state.generatedEmailHtml = "";
+        state.generatedWcmHtml = "";
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/ai/generate-newsletter`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", ...authHeaders() },
+          body: JSON.stringify({ articles: state.newsletterArticles })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          state.generatedEmailHtml = data.email_html;
+          state.generatedWcmHtml = data.wcm_html;
+          iframe.srcdoc = data.email_html;
+        }
+      } catch (err) {
+        toast("Erro ao gerar pré-visualização.", "error");
+      }
+    }
+
+    SNM.exportNewsletter = function (type) {
+      const code = type === "wcm" ? state.generatedWcmHtml : state.generatedEmailHtml;
+      const label = type === "wcm" ? "HTML para WCM HCL" : "HTML para E-mail";
+      if (!code) {
+        toast("Adicione ao menos uma matéria para exportar.", "error");
+        return;
+      }
+
+      navigator.clipboard.writeText(code).then(() => {
+        toast(`Modelo ${label} copiado para a área de transferência!`, "success");
+      });
+    };
+
     /* ─── INIT ─── */
     checkAuth();
+    renderNewsletterList();
+    updateNewsletterPreview();
   })();
   </script>
   </body>
