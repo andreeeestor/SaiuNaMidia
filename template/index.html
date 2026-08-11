@@ -1932,17 +1932,61 @@
       }
     }
 
-    SNM.exportNewsletter = function (type) {
-      const code = type === "wcm" ? state.generatedWcmHtml : state.generatedEmailHtml;
-      const label = type === "wcm" ? "HTML para WCM HCL" : "HTML para E-mail";
-      if (!code) {
+    SNM.exportNewsletter = async function (type) {
+      if (type === "wcm") {
+        if (!state.generatedWcmHtml) {
+          toast("Adicione ao menos uma matéria para exportar.", "error");
+          return;
+        }
+        navigator.clipboard.writeText(state.generatedWcmHtml).then(() => {
+          toast("Código HTML (WCM HCL) copiado para a área de transferência!", "success");
+        });
+        return;
+      }
+
+      // Email export: Copy Rich Text (rendered visual email) & open Outlook
+      if (!state.generatedEmailHtml) {
         toast("Adicione ao menos uma matéria para exportar.", "error");
         return;
       }
 
-      navigator.clipboard.writeText(code).then(() => {
-        toast(`Modelo ${label} copiado para a área de transferência!`, "success");
-      });
+      let copiedRichText = false;
+      try {
+        if (navigator.clipboard && window.ClipboardItem) {
+          const blobHtml = new Blob([state.generatedEmailHtml], { type: "text/html" });
+          const blobText = new Blob(["Newsletter Copasa - #saiunamídia"], { type: "text/plain" });
+          const item = new ClipboardItem({ "text/html": blobHtml, "text/plain": blobText });
+          await navigator.clipboard.write([item]);
+          copiedRichText = true;
+        }
+      } catch (e) {
+        try {
+          const div = document.createElement("div");
+          div.style.position = "fixed";
+          div.style.left = "-9999px";
+          div.innerHTML = state.generatedEmailHtml;
+          document.body.appendChild(div);
+          const range = document.createRange();
+          range.selectNodeContents(div);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          document.execCommand("copy");
+          sel.removeAllRanges();
+          document.body.removeChild(div);
+          copiedRichText = true;
+        } catch (err) {}
+      }
+
+      if (!copiedRichText) {
+        await navigator.clipboard.writeText(state.generatedEmailHtml);
+      }
+
+      setTimeout(() => {
+        window.location.href = "mailto:?subject=" + encodeURIComponent("Newsletter Copasa - #saiunamídia");
+      }, 300);
+
+      toast("Newsletter copiada (Rich Text)! O Outlook foi aberto — pressione Ctrl+V para colar visualmente.", "success");
     };
 
     /* ─── INIT ─── */
