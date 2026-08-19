@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from routers import auth, folders, media, ai
@@ -23,6 +23,16 @@ app.include_router(ai.router)
 @app.get("/")
 async def read_index():
     return FileResponse("template/index.html")
+
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return Response(status_code=204)
+
+
+@app.get("/.well-known/appspecific/com.chrome.devtools.json", include_in_schema=False)
+async def chrome_devtools():
+    return Response(status_code=204)
 
 
 if __name__ == "__main__":

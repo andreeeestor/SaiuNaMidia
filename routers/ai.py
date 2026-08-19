@@ -75,18 +75,44 @@ async def extract_media(req: ExtractMediaRequest, user=Depends(verify_token)):
     elif soup.title and soup.title.string:
         title = soup.title.string.strip()
 
-    # Extract description/summary (prioritize the first meaningful paragraph of the article)
+    # Extract description/summary — prioritize the first *article body* paragraph,
+    # explicitly skipping author bios, social/share blurbs, captions and navigation text.
     summary = ""
     article_p_text = ""
-    for p in soup.select("article p, main p, div[class*='content' i] p, div[class*='post' i] p, div[class*='materia' i] p, p"):
-        p_str = p.text.strip()
-        # Filter out short dates, captions, ads, share buttons
-        if len(p_str) > 60 and not re.search(r'^(por|publicado|foto|crédito|veja|leia mais|siga|compartilhe|inscreva-se)', p_str, re.I):
-            article_p_text = p_str
-            break
+
+    # Patterns that indicate the paragraph is NOT article body content
+    _NOISE_RE = re.compile(
+        r'^(por |publicado|foto:|crédito|veja (também|mais)|leia mais|siga|compartilhe|inscreva-se|'
+        r'assine|receba|cadastre|clique aqui|acesse|baixe|saiba mais|entre em contato|'
+        r'reprodução|legenda|caption|créditos|©|todos os direitos|política de privacidade|'
+        r'sobre o autor|sobre a autora|quem é|redação|jornalista|editor|editora|'
+        r'colunista|repórter|correspondente|formad[oa] em|graduad[oa] em|possui|atuou|'
+        r'follow us|tweet|facebook|instagram|whatsapp|linkedin|telegram|youtube)',
+        re.I
+    )
+    # Also skip paragraphs that are mostly inside links (navigation/menu noise)
+    for p in soup.select(
+        "article p, [class*='article-body' i] p, [class*='article-content' i] p, "
+        "[class*='materia-corpo' i] p, [class*='news-content' i] p, "
+        "[class*='post-content' i] p, [class*='entry-content' i] p, "
+        "[class*='texto' i] p, [class*='content' i] p, main p"
+    ):
+        p_str = p.get_text(separator=" ", strip=True)
+        # Minimum meaningful length
+        if len(p_str) < 80:
+            continue
+        # Skip obvious noise
+        if _NOISE_RE.search(p_str):
+            continue
+        # Skip paragraphs that are mostly anchor text (menus / share links)
+        link_text_len = sum(len(a.get_text()) for a in p.find_all("a"))
+        if link_text_len > len(p_str) * 0.6:
+            continue
+        article_p_text = p_str
+        break
 
     if article_p_text:
-        summary = article_p_text[:600]
+        summary = article_p_text[:700]
     else:
         og_desc = soup.find("meta", property="og:description") or soup.find("meta", attrs={"name": "description"})
         if og_desc and og_desc.get("content"):

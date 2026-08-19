@@ -374,6 +374,27 @@
         display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(14, 165, 233, 0.25); transition: all 0.15s;
       }
       #snm-root .snm-btn-export-html:hover { background: #0284c7; transform: translateY(-1px); }
+
+      /* ── DATE EDITOR ROW ── */
+      #snm-root .snm-date-editor-row {
+        display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+        background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px;
+        padding: 10px 14px;
+      }
+      #snm-root .snm-date-editor-label {
+        font-size: 0.75rem; font-weight: 700; color: #0369a1;
+        text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap;
+      }
+      #snm-root .snm-date-editor-input {
+        flex: 1; border: 1.5px solid #7dd3fc; border-radius: 7px;
+        padding: 6px 10px; font-size: 0.85rem; font-family: "DM Sans", sans-serif;
+        color: var(--snm-text-main); outline: none; background: #fff;
+        transition: border-color 0.15s;
+      }
+      #snm-root .snm-date-editor-input:focus { border-color: #0ea5e9; box-shadow: 0 0 0 3px rgba(14,165,233,0.12); }
+      #snm-root .snm-date-editor-hint { font-size: 0.7rem; color: #64748b; white-space: nowrap; }
+
+      /* ── ARTICLE CARD WITH EDIT BUTTON ── */
       #snm-root .snm-news-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
       #snm-root .snm-news-item-card {
         background: #f8fafc; border: 1px solid var(--snm-border); border-radius: 10px;
@@ -382,11 +403,84 @@
       #snm-root .snm-news-item-info { flex: 1; min-width: 0; }
       #snm-root .snm-news-item-title { font-size: 0.85rem; font-weight: 600; color: var(--snm-text-main); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
       #snm-root .snm-news-item-sub { font-size: 0.72rem; color: var(--snm-text-sub); }
+      #snm-root .snm-news-item-actions { display: flex; gap: 6px; flex-shrink: 0; }
+      #snm-root .snm-news-item-edit {
+        background: #eff6ff; color: #1d4ed8; border: none; border-radius: 6px;
+        width: 28px; height: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        transition: background 0.12s;
+      }
+      #snm-root .snm-news-item-edit:hover { background: #dbeafe; }
       #snm-root .snm-news-item-remove {
         background: #fee2e2; color: #ef4444; border: none; border-radius: 6px;
-        width: 28px; height: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        width: 28px; height: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        transition: background 0.12s;
       }
       #snm-root .snm-news-item-remove:hover { background: #fca5a5; }
+
+      /* ── EDIT ARTICLE MODAL ── */
+      #snm-root .snm-edit-modal-overlay {
+        position: fixed; inset: 0; z-index: 9000;
+        background: rgba(15,23,42,0.65); backdrop-filter: blur(4px);
+        display: none; align-items: center; justify-content: center; padding: 20px;
+      }
+      #snm-root .snm-edit-modal-overlay.snm-show { display: flex; }
+      #snm-root .snm-edit-modal {
+        background: #fff; border-radius: 16px; padding: 28px;
+        width: 100%; max-width: 540px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        display: flex; flex-direction: column; gap: 16px;
+        max-height: 90vh; overflow-y: auto;
+      }
+      #snm-root .snm-edit-modal h3 {
+        font-size: 1rem; font-weight: 700; color: var(--snm-text-main);
+        display: flex; align-items: center; gap: 8px;
+      }
+      #snm-root .snm-edit-modal-field { display: flex; flex-direction: column; gap: 5px; }
+      #snm-root .snm-edit-modal-label {
+        font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 0.5px; color: #475569;
+      }
+      #snm-root .snm-edit-modal-input {
+        border: 1.5px solid var(--snm-border); border-radius: 9px;
+        padding: 9px 12px; font-size: 0.88rem; font-family: "DM Sans", sans-serif;
+        color: var(--snm-text-main); outline: none; background: #f8fafc;
+        transition: border-color 0.15s;
+      }
+      #snm-root .snm-edit-modal-input:focus { border-color: var(--snm-primary); background: #fff; box-shadow: 0 0 0 3px rgba(14,165,233,0.12); }
+      #snm-root .snm-edit-modal-textarea {
+        border: 1.5px solid var(--snm-border); border-radius: 9px;
+        padding: 9px 12px; font-size: 0.85rem; font-family: "DM Sans", sans-serif;
+        color: var(--snm-text-main); outline: none; background: #f8fafc;
+        resize: vertical; min-height: 120px; line-height: 1.55;
+        transition: border-color 0.15s;
+      }
+      #snm-root .snm-edit-modal-textarea:focus { border-color: var(--snm-primary); background: #fff; box-shadow: 0 0 0 3px rgba(14,165,233,0.12); }
+      #snm-root .snm-edit-modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 4px; }
+
+      /* ── IMAGE DROP ZONE (inside edit modal) ── */
+      #snm-root .snm-img-drop-zone {
+        border: 2px dashed #cbd5e1; border-radius: 10px;
+        padding: 18px 14px; text-align: center; cursor: pointer;
+        background: #f8fafc; transition: all 0.15s;
+        display: flex; flex-direction: column; align-items: center; gap: 8px;
+      }
+      #snm-root .snm-img-drop-zone:hover,
+      #snm-root .snm-img-drop-zone.snm-drag-over { border-color: var(--snm-primary); background: #f0f9ff; }
+      #snm-root .snm-img-drop-zone.snm-uploading-img { pointer-events: none; opacity: 0.7; }
+      #snm-root .snm-img-drop-zone svg { color: #94a3b8; }
+      #snm-root .snm-img-drop-label {
+        font-size: 0.82rem; color: #64748b;
+      }
+      #snm-root .snm-img-drop-label strong { color: var(--snm-primary); }
+      #snm-root .snm-img-drop-label small { display: block; font-size: 0.7rem; color: #94a3b8; margin-top: 2px; }
+      #snm-root .snm-img-url-sep {
+        display: flex; align-items: center; gap: 8px;
+        font-size: 0.72rem; color: #94a3b8; font-weight: 600; margin: 2px 0;
+      }
+      #snm-root .snm-img-url-sep::before,
+      #snm-root .snm-img-url-sep::after {
+        content: ''; flex: 1; height: 1px; background: #e2e8f0;
+      }
       #snm-root .snm-iframe-preview {
         width: 100%; height: 720px; border: 1.5px solid var(--snm-border);
         border-radius: 12px; background: #fff; margin-top: 14px;
@@ -980,15 +1074,33 @@
                     Newsletter do Dia (#saiunamídia)
                   </div>
                   <div class="snm-news-actions-bar">
-                    <button class="snm-btn-export-html" onclick="SNM.exportNewsletter('wcm')" title="Exportar bloco HTML para Portal WCM HCL">
+                    <button class="snm-btn-export-html" onclick="SNM.exportNewsletter('wcm')" title="Copiar bloco HTML para Portal WCM HCL">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                      Exportar para HTML
+                      Copiar HTML
+                    </button>
+                    <button class="snm-btn-ghost snm-topbar-btn" onclick="SNM.exportNewsletter('wcm-download')" title="Baixar HTML do portal WCM">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                      Baixar HTML
                     </button>
                     <button class="snm-btn-export-email" onclick="SNM.exportNewsletter('email')" title="Exportar modelo HTML para E-mail">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                      Exportar para E-mail
+                      E-mail (Copiar)
+                    </button>
+                    <button class="snm-btn-ghost snm-topbar-btn" onclick="SNM.exportNewsletter('email-download')" title="Baixar HTML do e-mail">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                      Baixar E-mail
                     </button>
                   </div>
+                </div>
+
+                <!-- DATE EDITOR -->
+                <div class="snm-date-editor-row">
+                  <label class="snm-date-editor-label" for="snmNewsDate">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    Data da Newsletter:
+                  </label>
+                  <input type="text" id="snmNewsDate" class="snm-date-editor-input" placeholder="Ex: 14 de agosto de 2026" oninput="SNM.onDateChange()" />
+                  <span class="snm-date-editor-hint">Aparece no cabeçalho do e-mail</span>
                 </div>
 
                 <div id="snmNewsList" class="snm-news-list">
@@ -1068,6 +1180,86 @@
       </div>
     </div>
 
+    <!-- EDIT ARTICLE MODAL -->
+    <div class="snm-edit-modal-overlay" id="snmEditArticleOverlay">
+      <div class="snm-edit-modal">
+        <h3>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;color:#0ea5e9"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Editar Matéria
+        </h3>
+        <div class="snm-edit-modal-field">
+          <label class="snm-edit-modal-label">Título da Notícia</label>
+          <input type="text" id="snmEditTitle" class="snm-edit-modal-input" placeholder="Título da matéria..." />
+        </div>
+        <div class="snm-edit-modal-field">
+          <label class="snm-edit-modal-label">Veículo de Imprensa (Portal)</label>
+          <input type="text" id="snmEditPortal" class="snm-edit-modal-input" placeholder="Ex: G1, CNN Brasil, Folha..." />
+        </div>
+        <div class="snm-edit-modal-field">
+          <label class="snm-edit-modal-label">Conteúdo / Resumo da Matéria</label>
+          <textarea id="snmEditSummary" class="snm-edit-modal-textarea" placeholder="Resumo ou trecho principal da matéria..."></textarea>
+        </div>
+        <div class="snm-edit-modal-field">
+          <label class="snm-edit-modal-label">Logo do Veículo / Portal</label>
+
+          <!-- Drop Zone Logo -->
+          <div class="snm-img-drop-zone" id="snmEditLogoDropZone" style="padding:14px;">
+            <input type="file" id="snmEditLogoFile" accept="image/*" style="display:none" />
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <div class="snm-img-drop-label">
+              Arraste a logo aqui ou <strong>clique para selecionar</strong>
+              <small>PNG, SVG, JPG, WebP · máx 10 MB</small>
+            </div>
+            <div id="snmEditLogoUploadStatus" style="display:none;font-size:0.8rem;color:#0ea5e9;font-weight:600"></div>
+          </div>
+
+          <!-- OR separator -->
+          <div class="snm-img-url-sep">ou cole a URL da logo</div>
+
+          <!-- URL manual logo -->
+          <input type="url" id="snmEditLogo" class="snm-edit-modal-input" placeholder="https://exemplo.com/logo.png" oninput="SNM.previewEditLogo()" />
+
+          <!-- Live preview logo -->
+          <div id="snmEditLogoPreview" style="margin-top:8px;display:none;border-radius:8px;overflow:hidden;background:#ffffff;border:1px solid #e2e8f0;height:70px;align-items:center;justify-content:center;padding:8px;">
+            <img id="snmEditLogoThumb" src="" alt="Logo Pré-visualização" style="max-width:100%;max-height:54px;object-fit:contain;display:block;" onerror="this.parentElement.style.display='none'" />
+          </div>
+        </div>
+
+        <div class="snm-edit-modal-field">
+          <label class="snm-edit-modal-label">Imagem da Matéria</label>
+
+          <!-- Drop Zone -->
+          <div class="snm-img-drop-zone" id="snmEditImgDropZone">
+            <input type="file" id="snmEditImgFile" accept="image/*" style="display:none" />
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:32px;height:32px"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <div class="snm-img-drop-label">
+              Arraste uma imagem aqui ou <strong>clique para selecionar</strong>
+              <small>JPG, PNG, WebP · máx 10 MB</small>
+            </div>
+            <div id="snmEditImgUploadStatus" style="display:none;font-size:0.8rem;color:#0ea5e9;font-weight:600"></div>
+          </div>
+
+          <!-- OR separator -->
+          <div class="snm-img-url-sep">ou cole uma URL</div>
+
+          <!-- URL manual -->
+          <input type="url" id="snmEditImage" class="snm-edit-modal-input" placeholder="https://exemplo.com/imagem.jpg" oninput="SNM.previewEditImage()" />
+
+          <!-- Live preview -->
+          <div id="snmEditImagePreview" style="margin-top:8px;display:none;border-radius:8px;overflow:hidden;background:#f1f5f9;border:1px solid #e2e8f0;height:140px;align-items:center;justify-content:center;">
+            <img id="snmEditImageThumb" src="" alt="Pré-visualização" style="max-width:100%;max-height:140px;object-fit:contain;display:block;" onerror="this.parentElement.style.display='none'" />
+          </div>
+        </div>
+        <div class="snm-edit-modal-actions">
+          <button class="snm-modal-btn snm-modal-btn-cancel" onclick="SNM.closeEditArticle()">Cancelar</button>
+          <button class="snm-modal-btn snm-modal-btn-confirm" onclick="SNM.saveEditArticle()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:-1px;margin-right:4px"><polyline points="20 6 9 17 4 12"/></svg>
+            Salvar Alterações
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- TOAST -->
     <div class="snm-toast" id="snmToast">
       <svg id="snmToastIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
@@ -1097,7 +1289,8 @@
       lastExtracted: null,
       newsletterArticles: [],
       generatedEmailHtml: "",
-      generatedWcmHtml: ""
+      generatedWcmHtml: "",
+      editingArticleIdx: null
     };
 
     /* ─── SVG ICONS ─── */
@@ -1427,7 +1620,10 @@
       state.currentFolder = path;
       state.selected.clear();
       state.searchQuery = "";
-      $("snmSearch").value = "";
+      const searchEl = $("snmSearch");
+      if (searchEl) searchEl.value = "";
+      // Always switch to explorer tab when navigating a folder
+      SNM.switchTab("explorer");
       updateBreadcrumb(path);
       updateNavActive(path);
       loadAll();
@@ -1767,6 +1963,7 @@
       if (e.key === "Escape") {
         SNM.closeLightbox();
         SNM.closeMoveModal();
+        SNM.closeEditArticle();
         $("snmCtxMenu").classList.remove("snm-show");
       }
     });
@@ -1886,25 +2083,325 @@
       updateNewsletterPreview();
     };
 
+    /* ─── DATE EDITOR ─── */
+    function initNewsDate() {
+      const now = new Date();
+      const months = ["janeiro","fevereiro","março","abril","maio","junho",
+        "julho","agosto","setembro","outubro","novembro","dezembro"];
+      const defaultDate = `${now.getDate()} de ${months[now.getMonth()]} de ${now.getFullYear()}`;
+      const input = $("snmNewsDate");
+      if (input && !input.value) input.value = defaultDate;
+    }
+
+    SNM.onDateChange = function () {
+      updateNewsletterPreview();
+    };
+
+    function getNewsDate() {
+      const v = $("snmNewsDate")?.value?.trim();
+      return v || null;
+    }
+
     function renderNewsletterList() {
       const container = $("snmNewsList");
       if (!state.newsletterArticles.length) {
-        container.innerHTML = '<div style="font-size:0.8rem;color:#94a3b8;font-style:italic">Nenhuma matéria adicionada à newsletter hoje. Extraia uma notícia e clique em "Adicionar à Newsletter".</div>';
+        container.innerHTML = `
+          <div style="
+            display:flex; flex-direction:column; align-items:center; gap:10px;
+            padding:28px 20px; border:2px dashed #e2e8f0; border-radius:12px;
+            color:#94a3b8; text-align:center; background:#fafafa;
+          ">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:36px;height:36px;color:#cbd5e1"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8z"/></svg>
+            <div style="font-size:0.85rem;font-weight:600;color:#64748b">Nenhuma matéria adicionada ainda</div>
+            <div style="font-size:0.75rem;color:#94a3b8">Extraia uma notícia acima e clique em <strong style="color:#0ea5e9">Adicionar à Newsletter</strong></div>
+          </div>
+        `;
         return;
       }
 
+      const SVG_EDIT = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
+      const SVG_DRAG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:#cbd5e1"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>`;
+
       container.innerHTML = state.newsletterArticles.map((art, idx) => `
-        <div class="snm-news-item-card">
+        <div class="snm-news-item-card" data-idx="${idx}">
+          <!-- Index badge + drag handle -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;padding-right:4px">
+            <span style="
+              width:22px;height:22px;border-radius:50%;background:#e0f2fe;color:#0284c7;
+              font-size:0.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;
+            ">${idx + 1}</span>
+            <span style="cursor:grab;opacity:0.4">${SVG_DRAG}</span>
+          </div>
+          <!-- Thumbnail -->
+          ${art.image
+            ? `<img src="${esc(art.image)}" alt="" style="width:52px;height:52px;object-fit:cover;border-radius:6px;flex-shrink:0;border:1px solid #e2e8f0;" onerror="this.style.display='none'" />`
+            : `<div style="width:52px;height:52px;border-radius:6px;background:#f1f5f9;border:1px dashed #cbd5e1;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+                 <svg viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.5" style="width:20px;height:20px"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+               </div>`
+          }
+          <!-- Info -->
           <div class="snm-news-item-info">
             <div class="snm-news-item-title">${esc(art.title)}</div>
-            <div class="snm-news-item-sub">Veículo: <strong>${esc(art.portal_name)}</strong></div>
+            <div class="snm-news-item-sub">
+              <span style="
+                display:inline-flex;align-items:center;gap:5px;
+                background:#f1f5f9;border-radius:4px;padding:2px 8px;
+                font-size:0.68rem;font-weight:600;color:#475569;
+              ">
+                ${art.logo ? `<img src="${esc(art.logo)}" alt="" style="height:14px;max-width:40px;object-fit:contain;vertical-align:middle;" onerror="this.style.display='none'" />` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`}
+                ${esc(art.portal_name || 'Portal')}
+              </span>
+              <span style="color:#94a3b8;font-size:0.72rem;">${esc((art.summary || '').substring(0, 80))}${(art.summary || '').length > 80 ? '…' : ''}</span>
+            </div>
           </div>
-          <button class="snm-news-item-remove" onclick="SNM.removeNewsArticle(${idx})" title="Remover matéria">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </button>
+          <!-- Actions -->
+          <div class="snm-news-item-actions">
+            <button class="snm-news-item-edit" onclick="SNM.openEditArticle(${idx})" title="Editar matéria">${SVG_EDIT}</button>
+            <button class="snm-news-item-remove" onclick="SNM.removeNewsArticle(${idx})" title="Remover">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
         </div>
       `).join('');
     }
+
+    /* ─── EDIT ARTICLE MODAL ─── */
+    SNM.openEditArticle = function (idx) {
+      state.editingArticleIdx = idx;
+      const art = state.newsletterArticles[idx];
+      if (!art) return;
+      $("snmEditTitle").value = art.title || "";
+      $("snmEditPortal").value = art.portal_name || "";
+      $("snmEditSummary").value = art.summary || "";
+      $("snmEditImage").value = art.image || "";
+      $("snmEditLogo").value = art.logo || "";
+
+      // update image preview
+      const prev = $("snmEditImagePreview");
+      const thumb = $("snmEditImageThumb");
+      if (art.image) {
+        thumb.src = art.image;
+        prev.style.display = "flex";
+      } else {
+        thumb.src = "";
+        prev.style.display = "none";
+      }
+
+      // update logo preview
+      const prevLogo = $("snmEditLogoPreview");
+      const thumbLogo = $("snmEditLogoThumb");
+      if (art.logo) {
+        thumbLogo.src = art.logo;
+        prevLogo.style.display = "flex";
+      } else {
+        thumbLogo.src = "";
+        prevLogo.style.display = "none";
+      }
+
+      $("snmEditArticleOverlay").classList.add("snm-show");
+      setTimeout(() => $("snmEditTitle").focus(), 60);
+    };
+
+    SNM.closeEditArticle = function () {
+      $("snmEditArticleOverlay").classList.remove("snm-show");
+      state.editingArticleIdx = null;
+    };
+
+    SNM.previewEditImage = function () {
+      const url = $("snmEditImage").value.trim();
+      const prev = $("snmEditImagePreview");
+      const thumb = $("snmEditImageThumb");
+      if (url) {
+        thumb.src = url;
+        prev.style.display = "flex";
+      } else {
+        thumb.src = "";
+        prev.style.display = "none";
+      }
+    };
+
+    SNM.previewEditLogo = function () {
+      const url = $("snmEditLogo").value.trim();
+      const prev = $("snmEditLogoPreview");
+      const thumb = $("snmEditLogoThumb");
+      if (url) {
+        thumb.src = url;
+        prev.style.display = "flex";
+      } else {
+        thumb.src = "";
+        prev.style.display = "none";
+      }
+    };
+
+    /* ─── LOGO DROP ZONE IN EDIT MODAL ─── */
+    (function () {
+      const dropZone = $("snmEditLogoDropZone");
+      const fileInput = $("snmEditLogoFile");
+      const status = $("snmEditLogoUploadStatus");
+
+      if (!dropZone) return;
+
+      dropZone.addEventListener("click", () => fileInput.click());
+
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("snm-drag-over");
+      });
+      dropZone.addEventListener("dragleave", (e) => {
+        if (!dropZone.contains(e.relatedTarget)) dropZone.classList.remove("snm-drag-over");
+      });
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("snm-drag-over");
+        const file = e.dataTransfer.files[0];
+        if (file) uploadEditLogo(file);
+      });
+
+      fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) uploadEditLogo(file);
+        fileInput.value = "";
+      });
+
+      async function uploadEditLogo(file) {
+        if (!file.type.startsWith("image/")) {
+          toast("Apenas imagens são aceitas.", "error");
+          return;
+        }
+        if (file.size > 10 * 1024 * 1024) {
+          toast("Arquivo muito grande. Máximo: 10 MB.", "error");
+          return;
+        }
+
+        dropZone.classList.add("snm-uploading-img");
+        status.textContent = "Enviando logo...";
+        status.style.display = "block";
+
+        try {
+          const fd = new FormData();
+          fd.append("file", file);
+          fd.append("folder", "");
+          const res = await fetch(`${API_BASE}/upload`, {
+            method: "POST",
+            headers: authHeaders(),
+            body: fd
+          });
+          if (!res.ok) throw new Error("upload failed");
+          const data = await res.json();
+
+          const urlInput = $("snmEditLogo");
+          urlInput.value = data.url;
+          SNM.previewEditLogo();
+          status.textContent = "✓ Logo enviada!";
+          toast("Logo do veículo enviada e vinculada!", "success");
+        } catch {
+          status.textContent = "Erro ao enviar. Tente novamente.";
+          toast("Erro ao enviar logo.", "error");
+        } finally {
+          dropZone.classList.remove("snm-uploading-img");
+          setTimeout(() => { status.style.display = "none"; }, 3000);
+        }
+      }
+    })();
+
+    /* ─── IMAGE DROP ZONE IN EDIT MODAL ─── */
+    (function () {
+      const dropZone = $("snmEditImgDropZone");
+      const fileInput = $("snmEditImgFile");
+      const status = $("snmEditImgUploadStatus");
+
+      if (!dropZone) return;
+
+      // Click to pick file
+      dropZone.addEventListener("click", () => fileInput.click());
+
+      // Drag events
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("snm-drag-over");
+      });
+      dropZone.addEventListener("dragleave", (e) => {
+        if (!dropZone.contains(e.relatedTarget)) dropZone.classList.remove("snm-drag-over");
+      });
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("snm-drag-over");
+        const file = e.dataTransfer.files[0];
+        if (file) uploadEditImage(file);
+      });
+
+      // File input change
+      fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) uploadEditImage(file);
+        fileInput.value = "";
+      });
+
+      async function uploadEditImage(file) {
+        if (!file.type.startsWith("image/")) {
+          toast("Apenas imagens são aceitas.", "error");
+          return;
+        }
+        if (file.size > 10 * 1024 * 1024) {
+          toast("Arquivo muito grande. Máximo: 10 MB.", "error");
+          return;
+        }
+
+        // Show uploading state
+        dropZone.classList.add("snm-uploading-img");
+        status.textContent = "Enviando imagem...";
+        status.style.display = "block";
+
+        try {
+          const fd = new FormData();
+          fd.append("file", file);
+          fd.append("folder", "");
+          const res = await fetch(`${API_BASE}/upload`, {
+            method: "POST",
+            headers: authHeaders(),
+            body: fd
+          });
+          if (!res.ok) throw new Error("upload failed");
+          const data = await res.json();
+
+          // Fill the URL field and show preview
+          const urlInput = $("snmEditImage");
+          urlInput.value = data.url;
+          SNM.previewEditImage();
+          status.textContent = "✓ Imagem enviada!";
+          toast("Imagem enviada e vinculada!", "success");
+        } catch {
+          status.textContent = "Erro ao enviar. Tente novamente.";
+          toast("Erro ao enviar imagem.", "error");
+        } finally {
+          dropZone.classList.remove("snm-uploading-img");
+          setTimeout(() => { status.style.display = "none"; }, 3000);
+        }
+      }
+    })();
+
+    SNM.saveEditArticle = function () {
+      const idx = state.editingArticleIdx;
+      if (idx === null || idx === undefined) return;
+      const art = state.newsletterArticles[idx];
+      if (!art) return;
+      art.title = $("snmEditTitle").value.trim() || art.title;
+      art.portal_name = $("snmEditPortal").value.trim() || art.portal_name;
+      art.summary = $("snmEditSummary").value.trim() || art.summary;
+      const newImage = $("snmEditImage").value.trim();
+      if (newImage !== undefined) art.image = newImage;
+      const newLogo = $("snmEditLogo").value.trim();
+      if (newLogo !== undefined) art.logo = newLogo;
+      SNM.closeEditArticle();
+      renderNewsletterList();
+      updateNewsletterPreview();
+      toast("Matéria atualizada!", "success");
+    };
+
+    // Close edit modal on backdrop click
+    $("snmEditArticleOverlay").addEventListener("click", function (e) {
+      if (e.target === this) SNM.closeEditArticle();
+    });
 
     async function updateNewsletterPreview() {
       const iframe = $("snmNewsPreviewIframe");
@@ -1919,7 +2416,10 @@
         const res = await fetch(`${API_BASE}/ai/generate-newsletter`, {
           method: "POST",
           headers: { "Content-Type": "application/json", ...authHeaders() },
-          body: JSON.stringify({ articles: state.newsletterArticles })
+          body: JSON.stringify({
+            articles: state.newsletterArticles,
+            date_header: getNewsDate()
+          })
         });
         if (res.ok) {
           const data = await res.json();
@@ -1932,23 +2432,49 @@
       }
     }
 
+    function downloadHtml(html, filename) {
+      const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
     SNM.exportNewsletter = async function (type) {
+      const noArticles = !state.newsletterArticles.length;
+      const noEmailHtml = !state.generatedEmailHtml;
+      const noWcmHtml = !state.generatedWcmHtml;
+
       if (type === "wcm") {
-        if (!state.generatedWcmHtml) {
-          toast("Adicione ao menos uma matéria para exportar.", "error");
-          return;
-        }
+        if (noWcmHtml) { toast("Adicione ao menos uma matéria para exportar.", "error"); return; }
         navigator.clipboard.writeText(state.generatedWcmHtml).then(() => {
           toast("Código HTML (WCM HCL) copiado para a área de transferência!", "success");
         });
         return;
       }
 
-      // Email export: Copy Rich Text (rendered visual email) & open Outlook
-      if (!state.generatedEmailHtml) {
-        toast("Adicione ao menos uma matéria para exportar.", "error");
+      if (type === "wcm-download") {
+        if (noWcmHtml) { toast("Adicione ao menos uma matéria para baixar.", "error"); return; }
+        const date = $("snmNewsDate")?.value?.trim().replace(/\s+/g, "_") || "newsletter";
+        downloadHtml(state.generatedWcmHtml, `newsletter_wcm_${date}.html`);
+        toast("HTML WCM baixado!", "success");
         return;
       }
+
+      if (type === "email-download") {
+        if (noEmailHtml) { toast("Adicione ao menos uma matéria para baixar.", "error"); return; }
+        const date = $("snmNewsDate")?.value?.trim().replace(/\s+/g, "_") || "newsletter";
+        downloadHtml(state.generatedEmailHtml, `newsletter_email_${date}.html`);
+        toast("HTML do e-mail baixado!", "success");
+        return;
+      }
+
+      // Email copy (rich text)
+      if (noEmailHtml) { toast("Adicione ao menos uma matéria para exportar.", "error"); return; }
 
       let copiedRichText = false;
       try {
@@ -1987,6 +2513,7 @@
 
     /* ─── INIT ─── */
     checkAuth();
+    initNewsDate();
     renderNewsletterList();
     updateNewsletterPreview();
   })();
