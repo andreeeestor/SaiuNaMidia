@@ -9,6 +9,12 @@ import db.cloudinary_client  # ensures initialization
 router = APIRouter(tags=["Media"])
 
 
+def stable_image_url(public_id: str) -> str:
+    """Gera uma URL de entrega versionless para manter o link estável após overwrite."""
+    cloud_name = cloudinary.config().cloud_name
+    return f"https://res.cloudinary.com/{cloud_name}/image/upload/{public_id}"
+
+
 @router.get("/images", response_model=List[ImageItem])
 async def list_images(folder: Optional[str] = "", user=Depends(verify_token)):
     try:
@@ -31,7 +37,7 @@ async def list_images(folder: Optional[str] = "", user=Depends(verify_token)):
             name = public_id.split("/")[-1]
             images.append(ImageItem(
                 key=public_id,
-                url=resource.get("secure_url"),
+                url=stable_image_url(public_id),
                 name=name,
                 size=resource.get("bytes", 0),
                 uploadedAt=resource.get("created_at", "")
@@ -59,13 +65,46 @@ async def upload_image(
         public_id = res.get("public_id", "")
         return ImageItem(
             key=public_id,
-            url=res.get("secure_url"),
+            url=stable_image_url(public_id),
             name=public_id.split("/")[-1],
             size=res.get("bytes", 0),
             uploadedAt=res.get("created_at", "")
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao enviar arquivo para o Cloudinary: {str(e)}")
+
+
+@router.post("/images/replace", response_model=ImageItem)
+async def replace_image(
+    key: str = Form(...),
+    file: UploadFile = File(...),
+    user=Depends(verify_token)
+):
+    try:
+        if not file.content_type or not file.content_type.startswith("image/"):
+            raise HTTPException(status_code=400, detail="Apenas arquivos de imagem são aceitos.")
+
+        res = cloudinary.uploader.upload(
+            file.file,
+            public_id=key,
+            overwrite=True,
+            invalidate=True,
+            resource_type="image",
+            use_filename=False
+        )
+
+        public_id = res.get("public_id", key)
+        return ImageItem(
+            key=public_id,
+            url=stable_image_url(public_id),
+            name=file.filename or public_id.split("/")[-1],
+            size=res.get("bytes", 0),
+            uploadedAt=res.get("created_at", "")
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao substituir imagem no Cloudinary: {str(e)}")
 
 
 @router.delete("/images", response_model=ActionResponse)
@@ -88,7 +127,7 @@ async def move_image(req: MoveImageRequest, user=Depends(verify_token)):
         res = cloudinary.uploader.rename(old_key, new_key, overwrite=True)
         return ImageItem(
             key=new_key,
-            url=res.get("secure_url"),
+            url=stable_image_url(new_key),
             name=filename,
             size=res.get("bytes", 0),
             uploadedAt=res.get("created_at", "")
